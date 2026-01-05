@@ -1,9 +1,8 @@
 import 'dart:typed_data';
 import 'package:pdf/pdf.dart';
 import 'package:pdf/widgets.dart' as pw;
-import 'package:printing/printing.dart';
 import 'package:flutter/services.dart' show rootBundle;
-import 'package:http/http.dart' as http;
+import 'package:fitness_app/utils/date_helpers.dart';
 
 import '../models/workout_plan.dart';
 import '../models/plan_day.dart';
@@ -11,49 +10,27 @@ import '../models/day_exercise.dart';
 import '../models/player.dart';
 
 class PdfService {
-  static pw.Font? _cachedFont;
-  static pw.Font? _cachedBoldFont;
-  static bool _fontLoadAttempted = false;
+  static pw.Font? _arabicFont;
+  static pw.Font? _arabicBoldFont;
+  static bool _fontsLoaded = false;
 
-  /// Pre-load fonts once for the app session
+  /// Load fonts from bundled assets
   static Future<void> ensureFontsLoaded() async {
-    if (_fontLoadAttempted) return;
-    _fontLoadAttempted = true;
+    if (_fontsLoaded) return;
     
     try {
-      // Try downloading Cairo font directly from Google Fonts CDN
-      final regularResponse = await http.get(Uri.parse(
-        'https://fonts.gstatic.com/s/cairo/v28/SLXgc1nY6HkvangtZmpQdkhzfH5lkSs2SgRjCAGMQ1z0hOA-a1PiLQ.ttf'
-      )).timeout(const Duration(seconds: 10));
+      final fontData = await rootBundle.load('assets/fonts/Amiri-Regular.ttf');
+      final boldFontData = await rootBundle.load('assets/fonts/Amiri-Bold.ttf');
       
-      if (regularResponse.statusCode == 200) {
-        _cachedFont = pw.Font.ttf(regularResponse.bodyBytes.buffer.asByteData());
-      }
-      
-      final boldResponse = await http.get(Uri.parse(
-        'https://fonts.gstatic.com/s/cairo/v28/SLXgc1nY6HkvangtZmpQdkhzfH5lkSs2SgRjCAGMQ1z0hL4-a1PiLQ.ttf'
-      )).timeout(const Duration(seconds: 10));
-      
-      if (boldResponse.statusCode == 200) {
-        _cachedBoldFont = pw.Font.ttf(boldResponse.bodyBytes.buffer.asByteData());
-      }
+      _arabicFont = pw.Font.ttf(fontData);
+      _arabicBoldFont = pw.Font.ttf(boldFontData);
+      _fontsLoaded = true;
     } catch (e) {
-      print('Failed to load fonts from CDN: $e');
+      print('Error loading fonts: $e');
+      // Fallback only if asset load fails drastically
+      _arabicFont = pw.Font.helvetica();
+      _arabicBoldFont = pw.Font.helveticaBold();
     }
-    
-    // Fallback to PdfGoogleFonts if direct download failed
-    if (_cachedFont == null) {
-      try {
-        _cachedFont = await PdfGoogleFonts.cairoRegular();
-        _cachedBoldFont = await PdfGoogleFonts.cairoBold();
-      } catch (e) {
-        print('Failed to load PdfGoogleFonts: $e');
-      }
-    }
-    
-    // Ultimate fallback - use Helvetica (won't support Arabic but won't crash)
-    _cachedFont ??= pw.Font.helvetica();
-    _cachedBoldFont ??= pw.Font.helveticaBold();
   }
 
   Future<Uint8List> generatePlanPdf(WorkoutPlan plan, List<PlanDay> days, {Player? player}) async {
@@ -61,16 +38,17 @@ class PdfService {
     
     final pdf = pw.Document();
     
+    // Use the potentially-loaded Arabic font, or fallback
     final theme = pw.ThemeData.withFont(
-      base: _cachedFont!,
-      bold: _cachedBoldFont!,
+      base: _arabicFont!,
+      bold: _arabicBoldFont!,
     );
 
     // Create header page
     pdf.addPage(
       pw.Page(
         pageFormat: PdfPageFormat.a4,
-        textDirection: pw.TextDirection.rtl,
+        textDirection: pw.TextDirection.rtl, // RTL is critical for Arabic
         theme: theme,
         build: (pw.Context context) {
           return _buildHeader(plan, player, days.length);
@@ -132,7 +110,7 @@ class PdfService {
                           borderRadius: pw.BorderRadius.circular(4),
                         ),
                         child: pw.Text(
-                          'Weight: ${player.weight} kg',
+                          'الوزن: ${player.weight} كغ',
                           style: const pw.TextStyle(fontSize: 14),
                         ),
                       ),
@@ -146,7 +124,7 @@ class PdfService {
                           borderRadius: pw.BorderRadius.circular(4),
                         ),
                         child: pw.Text(
-                          'Height: ${player.height} cm',
+                          'الطول: ${player.height} سم',
                           style: const pw.TextStyle(fontSize: 14),
                         ),
                       ),
@@ -172,7 +150,7 @@ class PdfService {
             borderRadius: pw.BorderRadius.circular(4),
           ),
           child: pw.Text(
-            'Total Days: $totalDays',
+            'عدد الأيام: $totalDays',
             style: pw.TextStyle(fontSize: 16, fontWeight: pw.FontWeight.bold),
           ),
         ),
@@ -200,7 +178,7 @@ class PdfService {
             mainAxisAlignment: pw.MainAxisAlignment.spaceBetween,
             children: [
               pw.Text(
-                'Day ${day.sequenceOrder}',
+                'اليوم ${day.sequenceOrder}',
                 style: pw.TextStyle(fontSize: 22, fontWeight: pw.FontWeight.bold),
               ),
               if (day.isRestDay)
@@ -211,7 +189,7 @@ class PdfService {
                     borderRadius: pw.BorderRadius.circular(4),
                   ),
                   child: pw.Text(
-                    'Rest Day',
+                    'يوم راحة',
                     style: pw.TextStyle(
                       fontSize: 14,
                       fontWeight: pw.FontWeight.bold,
@@ -244,17 +222,17 @@ class PdfService {
               pw.TableRow(
                 decoration: const pw.BoxDecoration(color: PdfColors.grey200),
                 children: [
-                  _buildTableCell('Exercise', isHeader: true),
-                  _buildTableCell('Sets', isHeader: true),
-                  _buildTableCell('Notes', isHeader: true),
-                  _buildTableCell('Video', isHeader: true),
+                  _buildTableCell('التمرين', isHeader: true),
+                  _buildTableCell('المجموعات', isHeader: true),
+                  _buildTableCell('ملاحظات', isHeader: true),
+                  _buildTableCell('فيديو', isHeader: true),
                 ],
               ),
               // Exercise Rows
               ...day.exercises.map((ex) {
                 return pw.TableRow(
                   children: [
-                    _buildTableCell(ex.exerciseName ?? 'Exercise'),
+                    _buildTableCell(ex.exerciseName ?? 'تمرين'),
                     _buildSetDetails(ex),
                     _buildTableCell(ex.notes ?? '-'),
                     _buildVideoLink(ex.youtubeUrl),
@@ -268,7 +246,7 @@ class PdfService {
             child: pw.Padding(
               padding: const pw.EdgeInsets.all(40),
               child: pw.Text(
-                'No exercises added for this day',
+                'لا توجد تمارين مضافة لهذا اليوم',
                 style: const pw.TextStyle(fontSize: 14, color: PdfColors.grey600),
               ),
             ),
@@ -280,7 +258,7 @@ class PdfService {
               child: pw.Column(
                 children: [
                   pw.Text(
-                    'Rest and recover for the next day',
+                    'استرح واستعد لليوم التالي',
                     style: const pw.TextStyle(fontSize: 18, color: PdfColors.grey700),
                   ),
                 ],
@@ -317,7 +295,7 @@ class PdfService {
     final setsText = ex.sets.asMap().entries.map((entry) {
       final idx = entry.key + 1;
       final s = entry.value;
-      return 'Set $idx: ${s.reps} reps';
+      return 'م$idx: ${s.reps} تكرار';
     }).join('\n');
     
     return pw.Padding(
@@ -338,7 +316,7 @@ class PdfService {
       child: pw.UrlLink(
         destination: url,
         child: pw.Text(
-          'Watch',
+          'مشاهدة',
           style: const pw.TextStyle(
             fontSize: 11,
             color: PdfColors.blue700,

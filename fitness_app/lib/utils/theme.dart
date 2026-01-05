@@ -65,7 +65,7 @@ class AppTheme {
         backgroundColor: surfaceColor,
         elevation: 0,
         centerTitle: true,
-        titleTextStyle: GoogleFonts.cairo(
+        titleTextStyle: GoogleFonts.tajawal(
           fontSize: 20,
           fontWeight: FontWeight.w600,
           color: textPrimary,
@@ -103,8 +103,8 @@ class AppTheme {
           borderRadius: BorderRadius.circular(12),
           borderSide: const BorderSide(color: error),
         ),
-        labelStyle: GoogleFonts.cairo(color: textSecondary),
-        hintStyle: GoogleFonts.cairo(color: textHint),
+        labelStyle: GoogleFonts.tajawal(color: textSecondary),
+        hintStyle: GoogleFonts.tajawal(color: textHint),
       ),
 
       // Elevated Button Theme
@@ -116,7 +116,7 @@ class AppTheme {
           shape: RoundedRectangleBorder(
             borderRadius: BorderRadius.circular(12),
           ),
-          textStyle: GoogleFonts.cairo(
+          textStyle: GoogleFonts.tajawal(
             fontSize: 16,
             fontWeight: FontWeight.w600,
           ),
@@ -132,7 +132,7 @@ class AppTheme {
             borderRadius: BorderRadius.circular(12),
           ),
           side: const BorderSide(color: primaryColor),
-          textStyle: GoogleFonts.cairo(
+          textStyle: GoogleFonts.tajawal(
             fontSize: 16,
             fontWeight: FontWeight.w600,
           ),
@@ -143,7 +143,7 @@ class AppTheme {
       textButtonTheme: TextButtonThemeData(
         style: TextButton.styleFrom(
           foregroundColor: primaryColor,
-          textStyle: GoogleFonts.cairo(
+          textStyle: GoogleFonts.tajawal(
             fontSize: 14,
             fontWeight: FontWeight.w500,
           ),
@@ -179,7 +179,7 @@ class AppTheme {
         backgroundColor: surfaceColor,
         selectedColor: primaryColor.withOpacity(0.3),
         disabledColor: surfaceColor,
-        labelStyle: GoogleFonts.cairo(color: textPrimary),
+        labelStyle: GoogleFonts.tajawal(color: textPrimary),
         shape: RoundedRectangleBorder(
           borderRadius: BorderRadius.circular(20),
           side: const BorderSide(color: Color(0xFF3A3A3A)),
@@ -188,67 +188,67 @@ class AppTheme {
 
       // Text Theme
       textTheme: TextTheme(
-        displayLarge: GoogleFonts.cairo(
+        displayLarge: GoogleFonts.tajawal(
           fontSize: 32,
           fontWeight: FontWeight.bold,
           color: textPrimary,
         ),
-        displayMedium: GoogleFonts.cairo(
+        displayMedium: GoogleFonts.tajawal(
           fontSize: 28,
           fontWeight: FontWeight.bold,
           color: textPrimary,
         ),
-        displaySmall: GoogleFonts.cairo(
+        displaySmall: GoogleFonts.tajawal(
           fontSize: 24,
           fontWeight: FontWeight.bold,
           color: textPrimary,
         ),
-        headlineLarge: GoogleFonts.cairo(
+        headlineLarge: GoogleFonts.tajawal(
           fontSize: 22,
           fontWeight: FontWeight.w600,
           color: textPrimary,
         ),
-        headlineMedium: GoogleFonts.cairo(
+        headlineMedium: GoogleFonts.tajawal(
           fontSize: 20,
           fontWeight: FontWeight.w600,
           color: textPrimary,
         ),
-        headlineSmall: GoogleFonts.cairo(
+        headlineSmall: GoogleFonts.tajawal(
           fontSize: 18,
           fontWeight: FontWeight.w600,
           color: textPrimary,
         ),
-        titleLarge: GoogleFonts.cairo(
+        titleLarge: GoogleFonts.tajawal(
           fontSize: 16,
           fontWeight: FontWeight.w600,
           color: textPrimary,
         ),
-        titleMedium: GoogleFonts.cairo(
+        titleMedium: GoogleFonts.tajawal(
           fontSize: 14,
           fontWeight: FontWeight.w500,
           color: textPrimary,
         ),
-        titleSmall: GoogleFonts.cairo(
+        titleSmall: GoogleFonts.tajawal(
           fontSize: 12,
           fontWeight: FontWeight.w500,
           color: textSecondary,
         ),
-        bodyLarge: GoogleFonts.cairo(
+        bodyLarge: GoogleFonts.tajawal(
           fontSize: 16,
           fontWeight: FontWeight.normal,
           color: textPrimary,
         ),
-        bodyMedium: GoogleFonts.cairo(
+        bodyMedium: GoogleFonts.tajawal(
           fontSize: 14,
           fontWeight: FontWeight.normal,
           color: textSecondary,
         ),
-        bodySmall: GoogleFonts.cairo(
+        bodySmall: GoogleFonts.tajawal(
           fontSize: 12,
           fontWeight: FontWeight.normal,
           color: textSecondary,
         ),
-        labelLarge: GoogleFonts.cairo(
+        labelLarge: GoogleFonts.tajawal(
           fontSize: 14,
           fontWeight: FontWeight.w600,
           color: textPrimary,

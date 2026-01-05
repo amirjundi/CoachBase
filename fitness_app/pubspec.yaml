@@ -56,3 +56,5 @@ flutter:
   assets:
     - assets/images/
     - assets/logo.jpeg
+    - assets/fonts/Amiri-Regular.ttf
+    - assets/fonts/Amiri-Bold.ttf
