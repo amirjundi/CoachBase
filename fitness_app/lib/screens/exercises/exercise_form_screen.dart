@@ -23,7 +23,7 @@ class _ExerciseFormScreenState extends State<ExerciseFormScreen> {
   final _nameController = TextEditingController();
   final _descriptionController = TextEditingController();
   final _youtubeUrlController = TextEditingController();
-  String _muscleGroup = 'Chest';
+  String _muscleGroup = 'صدر';
   bool _isLoading = false;
   String? _previewThumbnail;
 

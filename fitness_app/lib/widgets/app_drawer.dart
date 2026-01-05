@@ -4,6 +4,7 @@ import 'package:fitness_app/l10n/app_localizations.dart';
 
 import '../providers/auth_provider.dart';
 import '../utils/theme.dart';
+import '../screens/kiosk/player_kiosk_screen.dart';
 
 class AppDrawer extends StatelessWidget {
   const AppDrawer({super.key});
@@ -105,6 +106,21 @@ class AppDrawer extends StatelessWidget {
                   title: l10n?.subscriptions ?? 'Subscriptions',
                   onTap: () {
                     Navigator.pop(context);
+                  },
+                ),
+                const Divider(),
+                // Player Kiosk Mode
+                _DrawerItem(
+                  icon: Icons.sports,
+                  title: 'وضع اللاعب',
+                  iconColor: AppTheme.primaryColor,
+                  onTap: () {
+                    Navigator.pop(context);
+                    Navigator.of(context).push(
+                      MaterialPageRoute(
+                        builder: (_) => const PlayerKioskScreen(),
+                      ),
+                    );
                   },
                 ),
                 const Divider(),

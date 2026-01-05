@@ -2,70 +2,76 @@ import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
 
 class AppTheme {
-  // Color Palette
-  static const Color primaryColor = Color(0xFF00BFA5);      // Teal
-  static const Color primaryDark = Color(0xFF00897B);
-  static const Color primaryLight = Color(0xFF64FFDA);
-  
-  static const Color accentColor = Color(0xFFFF6D00);       // Orange
-  static const Color accentLight = Color(0xFFFFAB40);
-  
+  // Colors
+  static const Color primaryColor = Color(0xFF00E5FF);
+  static const Color primaryLight = Color(0xFF6EFFFF);
+  static const Color primaryDark = Color(0xFF00B2CC);
   static const Color backgroundColor = Color(0xFF121212);
   static const Color surfaceColor = Color(0xFF1E1E1E);
-  static const Color cardColor = Color(0xFF252525);
-  
-  static const Color textPrimary = Color(0xFFFFFFFF);
-  static const Color textSecondary = Color(0xFFB0B0B0);
-  static const Color textHint = Color(0xFF757575);
-  
+  static const Color cardColor = Color(0xFF2A2A2A);
+  static const Color error = Color(0xFFCF6679);
   static const Color success = Color(0xFF4CAF50);
-  static const Color warning = Color(0xFFFF9800);
-  static const Color error = Color(0xFFEF5350);
+  static const Color warning = Color(0xFFFFB74D);
   static const Color info = Color(0xFF29B6F6);
+  static const Color accentColor = Color(0xFFFF9800); // Orange accent
+
+  // Text Colors
+  static const Color textPrimary = Color(0xFFFFFFFF);
+  static const Color textSecondary = Color(0xFFB3B3B3);
+  static const Color textHint = Color(0xFF757575);
 
   // Gradients
   static const LinearGradient primaryGradient = LinearGradient(
-    colors: [primaryColor, Color(0xFF26C6DA)],
     begin: Alignment.topLeft,
     end: Alignment.bottomRight,
-  );
-
-  static const LinearGradient accentGradient = LinearGradient(
-    colors: [accentColor, Color(0xFFFFAB00)],
-    begin: Alignment.topLeft,
-    end: Alignment.bottomRight,
+    colors: [primaryColor, primaryDark],
   );
 
   static const LinearGradient cardGradient = LinearGradient(
-    colors: [Color(0xFF2A2A2A), Color(0xFF1A1A1A)],
     begin: Alignment.topLeft,
     end: Alignment.bottomRight,
+    colors: [Color(0xFF2A2A2A), Color(0xFF1E1E1E)],
   );
+
+  static const LinearGradient accentGradient = LinearGradient(
+    begin: Alignment.topLeft,
+    end: Alignment.bottomRight,
+    colors: [Color(0xFFFFB74D), Color(0xFFFF9800)],
+  );
+
+  // Helper to get the font - using Rubik (supports Arabic)
+  static TextStyle _getFont({
+    double fontSize = 14,
+    FontWeight fontWeight = FontWeight.normal,
+    Color color = textPrimary,
+  }) {
+    return GoogleFonts.rubik(
+      fontSize: fontSize,
+      fontWeight: fontWeight,
+      color: color,
+    );
+  }
 
   // Theme Data
   static ThemeData get darkTheme {
     return ThemeData(
       useMaterial3: true,
       brightness: Brightness.dark,
+      primaryColor: primaryColor,
+      scaffoldBackgroundColor: backgroundColor,
       colorScheme: const ColorScheme.dark(
         primary: primaryColor,
-        secondary: accentColor,
+        secondary: primaryLight,
         surface: surfaceColor,
         error: error,
-        onPrimary: Colors.black,
-        onSecondary: Colors.black,
-        onSurface: textPrimary,
-        onError: Colors.white,
       ),
-      scaffoldBackgroundColor: backgroundColor,
-      cardColor: cardColor,
-      
+
       // AppBar Theme
       appBarTheme: AppBarTheme(
         backgroundColor: surfaceColor,
         elevation: 0,
         centerTitle: true,
-        titleTextStyle: GoogleFonts.tajawal(
+        titleTextStyle: _getFont(
           fontSize: 20,
           fontWeight: FontWeight.w600,
           color: textPrimary,
@@ -103,8 +109,8 @@ class AppTheme {
           borderRadius: BorderRadius.circular(12),
           borderSide: const BorderSide(color: error),
         ),
-        labelStyle: GoogleFonts.tajawal(color: textSecondary),
-        hintStyle: GoogleFonts.tajawal(color: textHint),
+        labelStyle: _getFont(color: textSecondary),
+        hintStyle: _getFont(color: textHint),
       ),
 
       // Elevated Button Theme
@@ -116,7 +122,7 @@ class AppTheme {
           shape: RoundedRectangleBorder(
             borderRadius: BorderRadius.circular(12),
           ),
-          textStyle: GoogleFonts.tajawal(
+          textStyle: _getFont(
             fontSize: 16,
             fontWeight: FontWeight.w600,
           ),
@@ -132,7 +138,7 @@ class AppTheme {
             borderRadius: BorderRadius.circular(12),
           ),
           side: const BorderSide(color: primaryColor),
-          textStyle: GoogleFonts.tajawal(
+          textStyle: _getFont(
             fontSize: 16,
             fontWeight: FontWeight.w600,
           ),
@@ -143,7 +149,7 @@ class AppTheme {
       textButtonTheme: TextButtonThemeData(
         style: TextButton.styleFrom(
           foregroundColor: primaryColor,
-          textStyle: GoogleFonts.tajawal(
+          textStyle: _getFont(
             fontSize: 14,
             fontWeight: FontWeight.w500,
           ),
@@ -179,7 +185,7 @@ class AppTheme {
         backgroundColor: surfaceColor,
         selectedColor: primaryColor.withOpacity(0.3),
         disabledColor: surfaceColor,
-        labelStyle: GoogleFonts.tajawal(color: textPrimary),
+        labelStyle: _getFont(color: textPrimary),
         shape: RoundedRectangleBorder(
           borderRadius: BorderRadius.circular(20),
           side: const BorderSide(color: Color(0xFF3A3A3A)),
@@ -188,106 +194,109 @@ class AppTheme {
 
       // Text Theme
       textTheme: TextTheme(
-        displayLarge: GoogleFonts.tajawal(
+        displayLarge: _getFont(
           fontSize: 32,
           fontWeight: FontWeight.bold,
           color: textPrimary,
         ),
-        displayMedium: GoogleFonts.tajawal(
+        displayMedium: _getFont(
           fontSize: 28,
           fontWeight: FontWeight.bold,
           color: textPrimary,
         ),
-        displaySmall: GoogleFonts.tajawal(
+        displaySmall: _getFont(
           fontSize: 24,
           fontWeight: FontWeight.bold,
           color: textPrimary,
         ),
-        headlineLarge: GoogleFonts.tajawal(
+        headlineLarge: _getFont(
           fontSize: 22,
           fontWeight: FontWeight.w600,
           color: textPrimary,
         ),
-        headlineMedium: GoogleFonts.tajawal(
+        headlineMedium: _getFont(
           fontSize: 20,
           fontWeight: FontWeight.w600,
           color: textPrimary,
         ),
-        headlineSmall: GoogleFonts.tajawal(
+        headlineSmall: _getFont(
           fontSize: 18,
           fontWeight: FontWeight.w600,
           color: textPrimary,
         ),
-        titleLarge: GoogleFonts.tajawal(
+        titleLarge: _getFont(
           fontSize: 16,
           fontWeight: FontWeight.w600,
           color: textPrimary,
         ),
-        titleMedium: GoogleFonts.tajawal(
+        titleMedium: _getFont(
           fontSize: 14,
           fontWeight: FontWeight.w500,
           color: textPrimary,
         ),
-        titleSmall: GoogleFonts.tajawal(
+        titleSmall: _getFont(
           fontSize: 12,
           fontWeight: FontWeight.w500,
           color: textSecondary,
         ),
-        bodyLarge: GoogleFonts.tajawal(
+        bodyLarge: _getFont(
           fontSize: 16,
           fontWeight: FontWeight.normal,
           color: textPrimary,
         ),
-        bodyMedium: GoogleFonts.tajawal(
+        bodyMedium: _getFont(
           fontSize: 14,
           fontWeight: FontWeight.normal,
           color: textSecondary,
         ),
-        bodySmall: GoogleFonts.tajawal(
+        bodySmall: _getFont(
           fontSize: 12,
           fontWeight: FontWeight.normal,
           color: textSecondary,
         ),
-        labelLarge: GoogleFonts.tajawal(
+        labelLarge: _getFont(
           fontSize: 14,
           fontWeight: FontWeight.w600,
           color: textPrimary,
         ),
       ),
-
-      // Divider Theme
-      dividerTheme: const DividerThemeData(
-        color: Color(0xFF3A3A3A),
-        thickness: 1,
-      ),
     );
   }
-}
 
-// Extension for gradient containers
-class GradientContainer extends StatelessWidget {
-  final Widget child;
-  final LinearGradient gradient;
-  final BorderRadius? borderRadius;
-  final EdgeInsetsGeometry? padding;
-
-  const GradientContainer({
-    super.key,
-    required this.child,
-    required this.gradient,
-    this.borderRadius,
-    this.padding,
-  });
-
-  @override
-  Widget build(BuildContext context) {
-    return Container(
-      padding: padding,
-      decoration: BoxDecoration(
-        gradient: gradient,
-        borderRadius: borderRadius ?? BorderRadius.circular(16),
+  // Reusable Widget Decorations
+  static BoxDecoration get cardDecoration => BoxDecoration(
+    color: cardColor,
+    borderRadius: BorderRadius.circular(16),
+    boxShadow: [
+      BoxShadow(
+        color: Colors.black.withOpacity(0.2),
+        blurRadius: 8,
+        offset: const Offset(0, 4),
       ),
-      child: child,
-    );
-  }
+    ],
+  );
+
+  static BoxDecoration get gradientCardDecoration => BoxDecoration(
+    gradient: cardGradient,
+    borderRadius: BorderRadius.circular(16),
+    boxShadow: [
+      BoxShadow(
+        color: Colors.black.withOpacity(0.2),
+        blurRadius: 8,
+        offset: const Offset(0, 4),
+      ),
+    ],
+  );
+
+  static BoxDecoration get primaryCardDecoration => BoxDecoration(
+    gradient: primaryGradient,
+    borderRadius: BorderRadius.circular(16),
+    boxShadow: [
+      BoxShadow(
+        color: primaryColor.withOpacity(0.3),
+        blurRadius: 12,
+        offset: const Offset(0, 4),
+      ),
+    ],
+  );
 }

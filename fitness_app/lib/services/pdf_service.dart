@@ -212,30 +212,30 @@ class PdfService {
           pw.Table(
             border: pw.TableBorder.all(color: PdfColors.grey400),
             columnWidths: {
-              0: const pw.FlexColumnWidth(3), // Exercise Name
-              1: const pw.FlexColumnWidth(2), // Sets/Reps
-              2: const pw.FlexColumnWidth(2), // Notes
-              3: const pw.FlexColumnWidth(1.5), // Video
+              0: const pw.FlexColumnWidth(1.5), // Video
+              1: const pw.FlexColumnWidth(2), // Notes
+              2: const pw.FlexColumnWidth(2), // Sets/Reps
+              3: const pw.FlexColumnWidth(3), // Exercise Name
             },
             children: [
-              // Header Row
+              // Header Row (reversed for RTL: leftmost = Exercise)
               pw.TableRow(
                 decoration: const pw.BoxDecoration(color: PdfColors.grey200),
                 children: [
-                  _buildTableCell('التمرين', isHeader: true),
-                  _buildTableCell('المجموعات', isHeader: true),
-                  _buildTableCell('ملاحظات', isHeader: true),
                   _buildTableCell('فيديو', isHeader: true),
+                  _buildTableCell('ملاحظات', isHeader: true),
+                  _buildTableCell('المجموعات', isHeader: true),
+                  _buildTableCell('التمرين', isHeader: true),
                 ],
               ),
               // Exercise Rows
               ...day.exercises.map((ex) {
                 return pw.TableRow(
                   children: [
-                    _buildTableCell(ex.exerciseName ?? 'تمرين'),
-                    _buildSetDetails(ex),
-                    _buildTableCell(ex.notes ?? '-'),
                     _buildVideoLink(ex.youtubeUrl),
+                    _buildTableCell(ex.notes ?? '-'),
+                    _buildSetDetails(ex),
+                    _buildTableCell(ex.exerciseName ?? 'تمرين'),
                   ],
                 );
               }),
