@@ -9,7 +9,7 @@ class AppLocalizationsAr extends AppLocalizations {
   AppLocalizationsAr([String locale = 'ar']) : super(locale);
 
   @override
-  String get appTitle => 'مدرب مجدل';
+  String get appTitle => 'CoachBase';
 
   @override
   String get welcomeBack => 'مرحباً بعودتك';
@@ -87,6 +87,23 @@ class AppLocalizationsAr extends AppLocalizations {
   String get deleteConfirmation => 'هل أنت متأكد أنك تريد حذف هذا؟';
 
   @override
+  String get deleteConfirmationAlt => 'هل تريد بالتأكيد حذف هذا العنصر؟';
+
+  @override
+  String daysLeft(Object days) {
+    return 'باقي $days أيام';
+  }
+
+  @override
+  String get unknownPlayer => 'لاعب غير معروف';
+
+  @override
+  String get unknownPlan => 'خطة غير معروفة';
+
+  @override
+  String get cancelled => 'ملغي';
+
+  @override
   String get save => 'حفظ';
 
   @override
@@ -136,9 +153,6 @@ class AppLocalizationsAr extends AppLocalizations {
 
   @override
   String get active => 'نشط';
-
-  @override
-  String get cancelled => 'ملغي';
 
   @override
   String get assignPlan => 'تعيين خطة';
@@ -298,11 +312,6 @@ class AppLocalizationsAr extends AppLocalizations {
   String get error => 'خطأ';
 
   @override
-  String daysLeft(Object days) {
-    return 'باقي $days أيام';
-  }
-
-  @override
   String get trainTrackTransform => 'تمرن. تتبع. تطور.';
 
   @override
@@ -371,4 +380,111 @@ class AppLocalizationsAr extends AppLocalizations {
 
   @override
   String get noMatchingExercises => 'لا توجد تمارين مطابقة';
+
+  @override
+  String get thisField => 'هذا الحقل';
+
+  @override
+  String get emailRequired => 'البريد الإلكتروني مطلوب';
+
+  @override
+  String get passwordRequired => 'كلمة المرور مطلوبة';
+
+  @override
+  String get confirmPasswordRequired => 'تأكيد كلمة المرور مطلوب';
+
+  @override
+  String get youtubeUrlRequired => 'رابط يوتيوب مطلوب';
+
+  @override
+  String get invalidYoutubeUrl => 'رابط يوتيوب غير صالح';
+
+  @override
+  String get numberInvalid => 'الرقم غير صالح';
+
+  @override
+  String get amountInvalid => 'المبلغ غير صالح';
+
+  @override
+  String get phoneInvalid => 'رقم هاتف غير صالح';
+
+  @override
+  String get justNow => 'الآن';
+
+  @override
+  String minAgo(Object minutes) {
+    return '$minutes دقيقة مضت';
+  }
+
+  @override
+  String hrAgo(Object hours) {
+    return '$hours ساعة مضت';
+  }
+
+  @override
+  String daysAgo(Object days) {
+    return '$days أيام مضت';
+  }
+
+  @override
+  String get secondsShort => 'ث';
+
+  @override
+  String get minutesShort => 'د';
+
+  @override
+  String get expiresToday => 'تنتهي اليوم';
+
+  @override
+  String get dayRemaining => 'يوم واحد متبقي';
+
+  @override
+  String daysRemaining(Object days) {
+    return '$days أيام متبقية';
+  }
+
+  @override
+  String get selectPlayerTitle => 'اختر اللاعب';
+
+  @override
+  String get selectPlanTitle => 'اختر خطة التمرين';
+
+  @override
+  String get choosePlayer => 'اختر لاعباً';
+
+  @override
+  String get choosePlan => 'اختر خطة';
+
+  @override
+  String get month => 'شهر';
+
+  @override
+  String get paymentOptional => 'الدفع (اختياري)';
+
+  @override
+  String get createSubscription => 'إنشاء اشتراك';
+
+  @override
+  String get subscriptionUpdated => 'تم تحديث الاشتراك';
+
+  @override
+  String get subscriptionCreated => 'تم إنشاء الاشتراك';
+
+  @override
+  String get subscriptionFailed => 'فشل حفظ الاشتراك';
+
+  @override
+  String setsCount(Object count) {
+    return '$count مجموعات';
+  }
+
+  @override
+  String get trainer => 'مدرب';
+
+  @override
+  String get noDaysAdded => 'لا توجد أيام مضافة بعد. اضغط \"إضافة يوم\" للبدء.';
+
+  @override
+  String get noWorkoutDaysMessage =>
+      'لا توجد أيام مضافة بعد. اضغط \"إضافة يوم\" للبدء.';
 }

@@ -51,6 +51,8 @@ class AppTheme {
       fontSize: fontSize,
       fontWeight: fontWeight,
       color: color,
+      letterSpacing: 0.0, // Fix wide spacing issue, Kufi works best with 0 or tight spacing
+      height: 1.5, // Better line height for Arabic
     );
     
     // 2. If you want to use GoogleFonts as a wrapper (optional), you can do:

@@ -1,4 +1,5 @@
 import 'package:intl/intl.dart';
+import 'package:fitness_app/l10n/app_localizations.dart';
 
 class DateHelpers {
   static String formatDate(DateTime date) {
@@ -21,49 +22,52 @@ class DateHelpers {
     return DateFormat('dd MMM yyyy, HH:mm').format(date);
   }
 
-  static String formatRelative(DateTime date) {
+  static String formatRelative(DateTime date, dynamic l10n) {
     final now = DateTime.now();
     final difference = now.difference(date);
 
     if (difference.inDays == 0) {
       if (difference.inHours == 0) {
         if (difference.inMinutes == 0) {
-          return 'Just now';
+          return 'الآن';
         }
-        return '${difference.inMinutes} min ago';
+        return '${difference.inMinutes} دقيقة مضت';
       }
-      return '${difference.inHours} hr ago';
+      return '${difference.inHours} ساعة مضت';
     } else if (difference.inDays == 1) {
-      return 'Yesterday';
+      return 'أمس';
     } else if (difference.inDays < 7) {
-      return '${difference.inDays} days ago';
+      return '${difference.inDays} أيام مضت';
     } else {
       return formatDate(date);
     }
   }
 
-  static String formatDuration(int seconds) {
+  static String formatDuration(int seconds, dynamic l10n) {
     final minutes = seconds ~/ 60;
     final remainingSeconds = seconds % 60;
     
+    final minStr = 'د';
+    final secStr = 'ث';
+
     if (minutes == 0) {
-      return '${remainingSeconds}s';
+      return '$remainingSeconds$secStr';
     } else if (remainingSeconds == 0) {
-      return '${minutes}m';
+      return '$minutes$minStr';
     } else {
-      return '${minutes}m ${remainingSeconds}s';
+      return '$minutes$minStr $remainingSeconds$secStr';
     }
   }
 
-  static String formatDaysRemaining(int days) {
+  static String formatDaysRemaining(int days, dynamic l10n) {
     if (days < 0) {
-      return 'Expired';
+      return 'منتهي';
     } else if (days == 0) {
-      return 'Expires today';
+      return 'تنتهي اليوم';
     } else if (days == 1) {
-      return '1 day remaining';
+      return 'يوم واحد متبقي';
     } else {
-      return '$days days remaining';
+      return '$days أيام متبقية';
     }
   }
 

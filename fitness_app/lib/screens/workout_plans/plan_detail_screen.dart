@@ -270,7 +270,7 @@ class _PlanDetailScreenState extends State<PlanDetailScreen> {
                                        children: [
                                            Text('${entry.key + 1}. ', style: const TextStyle(color: AppTheme.textSecondary)),
                                            Expanded(child: Text(ex.exerciseName ?? 'Exercise')),
-                                           Text('${ex.sets.length} Sets', style: const TextStyle(fontSize: 12, color: AppTheme.textSecondary)),
+                                           Text(l10n?.setsCount(ex.sets.length) ?? '${ex.sets.length} Sets', style: const TextStyle(fontSize: 12, color: AppTheme.textSecondary)),
                                        ], 
                                     ),
                                   );

@@ -151,10 +151,11 @@ class _PlayerKioskScreenState extends State<PlayerKioskScreen> {
             ),
 
             // Search Box (when no player selected)
-            if (_selectedPlayer == null) ...[
-              Padding(
-                padding: const EdgeInsets.symmetric(horizontal: 24),
-                child: Column(
+            if (_selectedPlayer == null)
+              Expanded(
+                child: SingleChildScrollView(
+                  padding: const EdgeInsets.symmetric(horizontal: 24),
+                  child: Column(
                   children: [
                     const SizedBox(height: 60),
                     const Icon(
@@ -220,8 +221,8 @@ class _PlayerKioskScreenState extends State<PlayerKioskScreen> {
                       ),
                   ],
                 ),
+                ),
               ),
-            ],
 
             // Player Workout Plan
             if (_selectedPlayer != null) ...[

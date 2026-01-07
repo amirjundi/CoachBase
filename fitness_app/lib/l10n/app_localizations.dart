@@ -97,7 +97,7 @@ abstract class AppLocalizations {
   /// No description provided for @appTitle.
   ///
   /// In ar, this message translates to:
-  /// **'مدرب مجدل'**
+  /// **'CoachBase'**
   String get appTitle;
 
   /// No description provided for @welcomeBack.
@@ -250,6 +250,36 @@ abstract class AppLocalizations {
   /// **'هل أنت متأكد أنك تريد حذف هذا؟'**
   String get deleteConfirmation;
 
+  /// No description provided for @deleteConfirmationAlt.
+  ///
+  /// In ar, this message translates to:
+  /// **'هل تريد بالتأكيد حذف هذا العنصر؟'**
+  String get deleteConfirmationAlt;
+
+  /// No description provided for @daysLeft.
+  ///
+  /// In ar, this message translates to:
+  /// **'باقي {days} أيام'**
+  String daysLeft(Object days);
+
+  /// No description provided for @unknownPlayer.
+  ///
+  /// In ar, this message translates to:
+  /// **'لاعب غير معروف'**
+  String get unknownPlayer;
+
+  /// No description provided for @unknownPlan.
+  ///
+  /// In ar, this message translates to:
+  /// **'خطة غير معروفة'**
+  String get unknownPlan;
+
+  /// No description provided for @cancelled.
+  ///
+  /// In ar, this message translates to:
+  /// **'ملغي'**
+  String get cancelled;
+
   /// No description provided for @save.
   ///
   /// In ar, this message translates to:
@@ -351,12 +381,6 @@ abstract class AppLocalizations {
   /// In ar, this message translates to:
   /// **'نشط'**
   String get active;
-
-  /// No description provided for @cancelled.
-  ///
-  /// In ar, this message translates to:
-  /// **'ملغي'**
-  String get cancelled;
 
   /// No description provided for @assignPlan.
   ///
@@ -670,12 +694,6 @@ abstract class AppLocalizations {
   /// **'خطأ'**
   String get error;
 
-  /// No description provided for @daysLeft.
-  ///
-  /// In ar, this message translates to:
-  /// **'باقي {days} أيام'**
-  String daysLeft(Object days);
-
   /// No description provided for @trainTrackTransform.
   ///
   /// In ar, this message translates to:
@@ -801,6 +819,198 @@ abstract class AppLocalizations {
   /// In ar, this message translates to:
   /// **'لا توجد تمارين مطابقة'**
   String get noMatchingExercises;
+
+  /// No description provided for @thisField.
+  ///
+  /// In ar, this message translates to:
+  /// **'هذا الحقل'**
+  String get thisField;
+
+  /// No description provided for @emailRequired.
+  ///
+  /// In ar, this message translates to:
+  /// **'البريد الإلكتروني مطلوب'**
+  String get emailRequired;
+
+  /// No description provided for @passwordRequired.
+  ///
+  /// In ar, this message translates to:
+  /// **'كلمة المرور مطلوبة'**
+  String get passwordRequired;
+
+  /// No description provided for @confirmPasswordRequired.
+  ///
+  /// In ar, this message translates to:
+  /// **'تأكيد كلمة المرور مطلوب'**
+  String get confirmPasswordRequired;
+
+  /// No description provided for @youtubeUrlRequired.
+  ///
+  /// In ar, this message translates to:
+  /// **'رابط يوتيوب مطلوب'**
+  String get youtubeUrlRequired;
+
+  /// No description provided for @invalidYoutubeUrl.
+  ///
+  /// In ar, this message translates to:
+  /// **'رابط يوتيوب غير صالح'**
+  String get invalidYoutubeUrl;
+
+  /// No description provided for @numberInvalid.
+  ///
+  /// In ar, this message translates to:
+  /// **'الرقم غير صالح'**
+  String get numberInvalid;
+
+  /// No description provided for @amountInvalid.
+  ///
+  /// In ar, this message translates to:
+  /// **'المبلغ غير صالح'**
+  String get amountInvalid;
+
+  /// No description provided for @phoneInvalid.
+  ///
+  /// In ar, this message translates to:
+  /// **'رقم هاتف غير صالح'**
+  String get phoneInvalid;
+
+  /// No description provided for @justNow.
+  ///
+  /// In ar, this message translates to:
+  /// **'الآن'**
+  String get justNow;
+
+  /// No description provided for @minAgo.
+  ///
+  /// In ar, this message translates to:
+  /// **'{minutes} دقيقة مضت'**
+  String minAgo(Object minutes);
+
+  /// No description provided for @hrAgo.
+  ///
+  /// In ar, this message translates to:
+  /// **'{hours} ساعة مضت'**
+  String hrAgo(Object hours);
+
+  /// No description provided for @daysAgo.
+  ///
+  /// In ar, this message translates to:
+  /// **'{days} أيام مضت'**
+  String daysAgo(Object days);
+
+  /// No description provided for @secondsShort.
+  ///
+  /// In ar, this message translates to:
+  /// **'ث'**
+  String get secondsShort;
+
+  /// No description provided for @minutesShort.
+  ///
+  /// In ar, this message translates to:
+  /// **'د'**
+  String get minutesShort;
+
+  /// No description provided for @expiresToday.
+  ///
+  /// In ar, this message translates to:
+  /// **'تنتهي اليوم'**
+  String get expiresToday;
+
+  /// No description provided for @dayRemaining.
+  ///
+  /// In ar, this message translates to:
+  /// **'يوم واحد متبقي'**
+  String get dayRemaining;
+
+  /// No description provided for @daysRemaining.
+  ///
+  /// In ar, this message translates to:
+  /// **'{days} أيام متبقية'**
+  String daysRemaining(Object days);
+
+  /// No description provided for @selectPlayerTitle.
+  ///
+  /// In ar, this message translates to:
+  /// **'اختر اللاعب'**
+  String get selectPlayerTitle;
+
+  /// No description provided for @selectPlanTitle.
+  ///
+  /// In ar, this message translates to:
+  /// **'اختر خطة التمرين'**
+  String get selectPlanTitle;
+
+  /// No description provided for @choosePlayer.
+  ///
+  /// In ar, this message translates to:
+  /// **'اختر لاعباً'**
+  String get choosePlayer;
+
+  /// No description provided for @choosePlan.
+  ///
+  /// In ar, this message translates to:
+  /// **'اختر خطة'**
+  String get choosePlan;
+
+  /// No description provided for @month.
+  ///
+  /// In ar, this message translates to:
+  /// **'شهر'**
+  String get month;
+
+  /// No description provided for @paymentOptional.
+  ///
+  /// In ar, this message translates to:
+  /// **'الدفع (اختياري)'**
+  String get paymentOptional;
+
+  /// No description provided for @createSubscription.
+  ///
+  /// In ar, this message translates to:
+  /// **'إنشاء اشتراك'**
+  String get createSubscription;
+
+  /// No description provided for @subscriptionUpdated.
+  ///
+  /// In ar, this message translates to:
+  /// **'تم تحديث الاشتراك'**
+  String get subscriptionUpdated;
+
+  /// No description provided for @subscriptionCreated.
+  ///
+  /// In ar, this message translates to:
+  /// **'تم إنشاء الاشتراك'**
+  String get subscriptionCreated;
+
+  /// No description provided for @subscriptionFailed.
+  ///
+  /// In ar, this message translates to:
+  /// **'فشل حفظ الاشتراك'**
+  String get subscriptionFailed;
+
+  /// No description provided for @setsCount.
+  ///
+  /// In ar, this message translates to:
+  /// **'{count} مجموعات'**
+  String setsCount(Object count);
+
+  /// No description provided for @trainer.
+  ///
+  /// In ar, this message translates to:
+  /// **'مدرب'**
+  String get trainer;
+
+  /// No description provided for @noDaysAdded.
+  ///
+  /// In ar, this message translates to:
+  /// **'لا توجد أيام مضافة بعد. اضغط \"إضافة يوم\" للبدء.'**
+  String get noDaysAdded;
+
+  /// No description provided for @noWorkoutDaysMessage.
+  ///
+  /// In ar, this message translates to:
+  /// **'لا توجد أيام مضافة بعد. اضغط \"إضافة يوم\" للبدء.'**
+  String get noWorkoutDaysMessage;
 }
 
 class _AppLocalizationsDelegate

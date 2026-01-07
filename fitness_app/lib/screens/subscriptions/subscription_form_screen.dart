@@ -96,7 +96,7 @@ class _SubscriptionFormScreenState extends State<SubscriptionFormScreen> {
     if (_selectedPlayerId == null) {
       ScaffoldMessenger.of(context).showSnackBar(
         const SnackBar(
-          content: Text('Please select a player'),
+          content: Text('الرجاء اختيار لاعب'),
           backgroundColor: AppTheme.error,
         ),
       );
@@ -106,7 +106,7 @@ class _SubscriptionFormScreenState extends State<SubscriptionFormScreen> {
     if (_selectedPlanId == null) {
       ScaffoldMessenger.of(context).showSnackBar(
         const SnackBar(
-          content: Text('Please select a workout plan'),
+          content: Text('الرجاء اختيار خطة تمرين'),
           backgroundColor: AppTheme.error,
         ),
       );
@@ -147,14 +147,14 @@ class _SubscriptionFormScreenState extends State<SubscriptionFormScreen> {
       Navigator.of(context).pop();
       ScaffoldMessenger.of(context).showSnackBar(
         SnackBar(
-          content: Text(isEditing ? 'Subscription updated' : 'Subscription created'),
+          content: Text(isEditing ? 'تم تحديث الاشتراك' : 'تم إنشاء الاشتراك'),
           backgroundColor: AppTheme.success,
         ),
       );
     } else {
       ScaffoldMessenger.of(context).showSnackBar(
         SnackBar(
-          content: Text(subscriptionsProvider.error ?? 'Failed to save subscription'),
+          content: Text(subscriptionsProvider.error ?? 'فشل حفظ الاشتراك'),
           backgroundColor: AppTheme.error,
         ),
       );
@@ -169,7 +169,7 @@ class _SubscriptionFormScreenState extends State<SubscriptionFormScreen> {
 
     return Scaffold(
       appBar: AppBar(
-        title: Text(isEditing ? 'Edit Subscription' : 'New Subscription'),
+        title: Text(isEditing ? 'تعديل الاشتراك' : 'اشتراك جديد'),
       ),
       body: Form(
         key: _formKey,
@@ -178,7 +178,7 @@ class _SubscriptionFormScreenState extends State<SubscriptionFormScreen> {
           children: [
             // Player Selection
             Text(
-              l10n?.selectPlayer ?? 'Select Player',
+              'اختر اللاعب',
               style: Theme.of(context).textTheme.titleMedium,
             ),
             const SizedBox(height: 12),
@@ -186,7 +186,7 @@ class _SubscriptionFormScreenState extends State<SubscriptionFormScreen> {
               value: _selectedPlayerId,
               decoration: InputDecoration(
                 prefixIcon: const Icon(Icons.person_outlined),
-                hintText: l10n?.pleaseSelectPlayer ?? 'Choose a player',
+                hintText: 'اختر لاعباً',
               ),
               items: playersProvider.players.map((player) {
                 return DropdownMenuItem(
@@ -202,7 +202,7 @@ class _SubscriptionFormScreenState extends State<SubscriptionFormScreen> {
 
             // Plan Selection
             Text(
-              l10n?.selectPlan ?? 'Select Workout Plan',
+              'اختر خطة التمرين',
               style: Theme.of(context).textTheme.titleMedium,
             ),
             const SizedBox(height: 12),
@@ -210,7 +210,7 @@ class _SubscriptionFormScreenState extends State<SubscriptionFormScreen> {
               value: _selectedPlanId,
               decoration: InputDecoration(
                 prefixIcon: const Icon(Icons.fitness_center_outlined),
-                hintText: l10n?.pleaseSelectPlan ?? 'Choose a workout plan',
+                hintText: 'اختر خطة',
               ),
               items: plansProvider.plans.where((p) => p.isActive).map((plan) {
                 return DropdownMenuItem(
@@ -236,7 +236,7 @@ class _SubscriptionFormScreenState extends State<SubscriptionFormScreen> {
 
             // Duration
             Text(
-              l10n?.subscriptionDuration ?? 'Subscription Duration',
+              'مدة الاشتراك',
               style: Theme.of(context).textTheme.titleMedium,
             ),
             const SizedBox(height: 12),
@@ -266,7 +266,7 @@ class _SubscriptionFormScreenState extends State<SubscriptionFormScreen> {
 
             // Start Date
             Text(
-              l10n?.startDate ?? 'Start Date',
+              'تاريخ البدء',
               style: Theme.of(context).textTheme.titleMedium,
             ),
             const SizedBox(height: 12),
@@ -312,7 +312,7 @@ class _SubscriptionFormScreenState extends State<SubscriptionFormScreen> {
                     crossAxisAlignment: CrossAxisAlignment.start,
                     children: [
                       Text(
-                        l10n?.endDate ?? 'End Date',
+                        'تاريخ الانتهاء',
                         style: const TextStyle(
                           color: AppTheme.textSecondary,
                           fontSize: 12,
@@ -333,7 +333,7 @@ class _SubscriptionFormScreenState extends State<SubscriptionFormScreen> {
 
             // Payment (optional)
             Text(
-              l10n?.payment ?? 'Payment (Optional)',
+              'الدفع (اختياري)',
               style: Theme.of(context).textTheme.titleMedium,
             ),
             const SizedBox(height: 12),
@@ -341,7 +341,7 @@ class _SubscriptionFormScreenState extends State<SubscriptionFormScreen> {
               controller: _amountController,
               keyboardType: const TextInputType.numberWithOptions(decimal: true),
               decoration: InputDecoration(
-                labelText: l10n?.amount ?? 'Amount',
+                labelText: 'المبلغ',
                 prefixIcon: const Icon(Icons.attach_money),
                 hintText: '0.00',
               ),
@@ -351,7 +351,7 @@ class _SubscriptionFormScreenState extends State<SubscriptionFormScreen> {
               controller: _notesController,
               maxLines: 2,
               decoration: InputDecoration(
-                labelText: l10n?.paymentNotes ?? 'Payment Notes',
+                labelText: 'ملاحظات الدفع',
                 prefixIcon: const Padding(
                   padding: EdgeInsets.only(bottom: 24),
                   child: Icon(Icons.notes_outlined),
@@ -377,8 +377,8 @@ class _SubscriptionFormScreenState extends State<SubscriptionFormScreen> {
                       ),
                     )
                   : Text(isEditing 
-                      ? (l10n?.saveChanges ?? 'Save Changes') 
-                      : (l10n?.newSubscription ?? 'Create Subscription')),
+                      ? 'حفظ التغييرات' 
+                      : 'إنشاء اشتراك'),
             ),
             const SizedBox(height: 32),
           ],

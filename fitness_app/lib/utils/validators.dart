@@ -1,38 +1,38 @@
 class Validators {
-  static String? required(String? value, {String fieldName = 'This field'}) {
+  static String? required(String? value, {String fieldName = 'هذا الحقل'}) {
     if (value == null || value.trim().isEmpty) {
-      return '$fieldName is required';
+      return '$fieldName مطلوب';
     }
     return null;
   }
 
   static String? email(String? value) {
     if (value == null || value.trim().isEmpty) {
-      return 'Email is required';
+      return 'البريد الإلكتروني مطلوب';
     }
     final emailRegex = RegExp(r'^[\w-\.]+@([\w-]+\.)+[\w-]{2,4}$');
     if (!emailRegex.hasMatch(value)) {
-      return 'Please enter a valid email';
+      return 'بريد إلكتروني غير صالح';
     }
     return null;
   }
 
   static String? password(String? value) {
     if (value == null || value.isEmpty) {
-      return 'Password is required';
+      return 'كلمة المرور مطلوبة';
     }
     if (value.length < 6) {
-      return 'Password must be at least 6 characters';
+      return 'يجب أن تكون كلمة المرور 6 أحرف على الأقل';
     }
     return null;
   }
 
   static String? confirmPassword(String? value, String password) {
     if (value == null || value.isEmpty) {
-      return 'Please confirm your password';
+      return 'تأكيد كلمة المرور مطلوب';
     }
     if (value != password) {
-      return 'Passwords do not match';
+      return 'كلمات المرور غير متطابقة';
     }
     return null;
   }
@@ -43,14 +43,14 @@ class Validators {
     }
     final phoneRegex = RegExp(r'^[+]?[\d\s-]{8,}$');
     if (!phoneRegex.hasMatch(value)) {
-      return 'Please enter a valid phone number';
+      return 'رقم هاتف غير صالح';
     }
     return null;
   }
 
   static String? youtubeUrl(String? value) {
     if (value == null || value.trim().isEmpty) {
-      return 'YouTube URL is required';
+      return 'رابط يوتيوب مطلوب';
     }
     
     final youtubeRegex = RegExp(
@@ -58,27 +58,27 @@ class Validators {
     );
     
     if (!youtubeRegex.hasMatch(value)) {
-      return 'Please enter a valid YouTube URL';
+      return 'رابط يوتيوب غير صالح';
     }
     return null;
   }
 
-  static String? number(String? value, {String fieldName = 'This field', int? min, int? max}) {
+  static String? number(String? value, {String fieldName = 'هذا الحقل', int? min, int? max}) {
     if (value == null || value.trim().isEmpty) {
-      return '$fieldName is required';
+      return '$fieldName مطلوب';
     }
     
     final number = int.tryParse(value);
     if (number == null) {
-      return 'Please enter a valid number';
+      return 'الرقم غير صالح';
     }
     
     if (min != null && number < min) {
-      return '$fieldName must be at least $min';
+      return '$fieldName يجب أن يكون أكبر من أو يساوي $min';
     }
     
     if (max != null && number > max) {
-      return '$fieldName must be at most $max';
+      return '$fieldName يجب أن يكون أصغر من أو يساوي $max';
     }
     
     return null;
@@ -91,7 +91,7 @@ class Validators {
     
     final amount = double.tryParse(value);
     if (amount == null || amount < 0) {
-      return 'Please enter a valid amount';
+      return 'المبلغ غير صالح';
     }
     
     return null;

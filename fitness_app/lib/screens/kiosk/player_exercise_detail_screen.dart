@@ -1,5 +1,8 @@
 import 'package:flutter/material.dart';
-import 'package:youtube_player_flutter/youtube_player_flutter.dart';
+import 'package:youtube_player_flutter/youtube_player_flutter.dart'; // Keep for convertUrlToId utility
+import 'package:youtube_explode_dart/youtube_explode_dart.dart';
+import 'package:video_player/video_player.dart';
+import 'package:chewie/chewie.dart';
 import '../../models/day_exercise.dart';
 import '../../utils/theme.dart';
 import '../../l10n/app_localizations.dart';
@@ -17,42 +20,68 @@ class PlayerExerciseDetailScreen extends StatefulWidget {
 }
 
 class _PlayerExerciseDetailScreenState extends State<PlayerExerciseDetailScreen> {
-  YoutubePlayerController? _controller;
-  bool _isPlayerReady = false;
+  // New playback controllers
+  VideoPlayerController? _videoController;
+  ChewieController? _chewieController;
+  final YoutubeExplode _yt = YoutubeExplode();
+  bool _isLoading = true;
+  String? _errorMessage;
 
   @override
   void initState() {
     super.initState();
-    if (widget.exercise.youtubeUrl != null) {
+    _initPlayer();
+  }
+
+  Future<void> _initPlayer() async {
+    if (widget.exercise.youtubeUrl == null) {
+      setState(() => _isLoading = false);
+      return;
+    }
+
+    try {
       final videoId = YoutubePlayer.convertUrlToId(widget.exercise.youtubeUrl!);
-      if (videoId != null) {
-        _controller = YoutubePlayerController(
-          initialVideoId: videoId,
-          flags: const YoutubePlayerFlags(
-            autoPlay: false,
-            mute: false,
-            enableCaption: false,
-          ),
-        )..addListener(_listener);
-      }
-    }
-  }
+      if (videoId == null) throw Exception('Invalid YouTube URL');
 
-  void _listener() {
-    if (_isPlayerReady && mounted && !_controller!.value.isFullScreen) {
-      setState(() {});
-    }
-  }
+      // Get video manifest (stream info)
+      var manifest = await _yt.videos.streamsClient.getManifest(videoId);
+      var streamInfo = manifest.muxed.withHighestBitrate();
 
-  @override
-  void deactivate() {
-    _controller?.pause();
-    super.deactivate();
+      // Initialize video player with direct stream URL
+      _videoController = VideoPlayerController.networkUrl(streamInfo.url);
+      await _videoController!.initialize();
+
+      _chewieController = ChewieController(
+        videoPlayerController: _videoController!,
+        autoPlay: false,
+        looping: false,
+        aspectRatio: _videoController!.value.aspectRatio,
+        errorBuilder: (context, errorMessage) {
+          return Center(
+            child: Text(
+              errorMessage,
+              style: const TextStyle(color: Colors.white),
+            ),
+          );
+        },
+      );
+
+      setState(() {
+        _isLoading = false;
+      });
+    } catch (e) {
+      setState(() {
+        _isLoading = false;
+        _errorMessage = 'Could not play video: $e';
+      });
+    }
   }
 
   @override
   void dispose() {
-    _controller?.dispose();
+    _videoController?.dispose();
+    _chewieController?.dispose();
+    _yt.close();
     super.dispose();
   }
 
@@ -69,28 +98,35 @@ class _PlayerExerciseDetailScreenState extends State<PlayerExerciseDetailScreen>
           crossAxisAlignment: CrossAxisAlignment.stretch,
           children: [
             // Video Player Section
-            if (_controller != null)
-              YoutubePlayerBuilder(
-                player: YoutubePlayer(
-                  controller: _controller!,
-                  showVideoProgressIndicator: true,
-                  progressIndicatorColor: AppTheme.primaryColor,
-                  onReady: () => _isPlayerReady = true,
-                ),
-                builder: (context, player) => player,
-              )
-            else
-              Container(
-                height: 200,
-                color: AppTheme.surfaceColor,
-                child: const Center(
-                  child: Icon(
-                    Icons.videocam_off_outlined,
-                    size: 64,
-                    color: AppTheme.textSecondary,
-                  ),
-                ),
-              ),
+            Container(
+              height: 250,
+              color: Colors.black,
+              child: _isLoading
+                  ? const Center(child: CircularProgressIndicator())
+                  : _errorMessage != null
+                      ? Center(
+                          child: Column(
+                            mainAxisAlignment: MainAxisAlignment.center,
+                            children: [
+                              const Icon(Icons.error_outline, color: AppTheme.error, size: 40),
+                              const SizedBox(height: 8),
+                              Text(
+                                'عذراً، لا يمكن تشغيل الفيديو',
+                                style: TextStyle(color: AppTheme.textSecondary),
+                              ),
+                            ],
+                          ),
+                        )
+                      : _chewieController != null
+                          ? Chewie(controller: _chewieController!)
+                          : const Center(
+                              child: Icon(
+                                Icons.videocam_off_outlined,
+                                size: 64,
+                                color: AppTheme.textSecondary,
+                              ),
+                            ),
+            ),
 
             // Exercise Details Section
             Padding(

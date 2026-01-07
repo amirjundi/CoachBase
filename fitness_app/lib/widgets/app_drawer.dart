@@ -49,7 +49,7 @@ class AppDrawer extends StatelessWidget {
                 ),
                 const SizedBox(height: 16),
                 Text(
-                  trainer?.name ?? 'Trainer',
+                  trainer?.name ?? 'مدرب',
                   style: const TextStyle(
                     fontSize: 20,
                     fontWeight: FontWeight.bold,
@@ -75,35 +75,35 @@ class AppDrawer extends StatelessWidget {
               children: [
                 _DrawerItem(
                   icon: Icons.dashboard_outlined,
-                  title: l10n?.dashboard ?? 'Dashboard',
+                  title: l10n?.dashboard ?? 'لوحة التحكم',
                   onTap: () {
                     Navigator.pop(context);
                   },
                 ),
                 _DrawerItem(
                   icon: Icons.people_outlined,
-                  title: l10n?.players ?? 'Players',
+                  title: l10n?.players ?? 'اللاعبين',
                   onTap: () {
                     Navigator.pop(context);
                   },
                 ),
                 _DrawerItem(
                   icon: Icons.fitness_center_outlined,
-                  title: l10n?.workoutPlans ?? 'Workout Plans',
+                  title: l10n?.workoutPlans ?? 'خطة التمارين',
                   onTap: () {
                     Navigator.pop(context);
                   },
                 ),
                 _DrawerItem(
                   icon: Icons.sports_gymnastics_outlined,
-                  title: l10n?.exercises ?? 'Exercises',
+                  title: l10n?.exercises ?? 'التمارين',
                   onTap: () {
                     Navigator.pop(context);
                   },
                 ),
                 _DrawerItem(
                   icon: Icons.card_membership_outlined,
-                  title: l10n?.subscriptions ?? 'Subscriptions',
+                  title: l10n?.subscriptions ?? 'الاشتراكات',
                   onTap: () {
                     Navigator.pop(context);
                   },
@@ -126,7 +126,7 @@ class AppDrawer extends StatelessWidget {
                 const Divider(),
                 _DrawerItem(
                   icon: Icons.settings_outlined,
-                  title: l10n?.settings ?? 'Settings',
+                  title: l10n?.settings ?? 'الإعدادات',
                   onTap: () {
                     Navigator.pop(context);
                     // TODO: Navigate to settings
@@ -134,7 +134,7 @@ class AppDrawer extends StatelessWidget {
                 ),
                 _DrawerItem(
                   icon: Icons.help_outline,
-                  title: l10n?.helpSupport ?? 'Help & Support',
+                  title: l10n?.helpSupport ?? 'المساعدة والدعم',
                   onTap: () {
                     Navigator.pop(context);
                     // TODO: Navigate to help

@@ -49,7 +49,7 @@ class SubscriptionsListScreen extends StatelessWidget {
                   Expanded(
                     child: _StatCard(
                       icon: Icons.check_circle,
-                      label: 'Active',
+                      label: l10n?.active ?? 'نشط',
                       value: active.length.toString(),
                       color: AppTheme.success,
                     ),
@@ -58,7 +58,7 @@ class SubscriptionsListScreen extends StatelessWidget {
                   Expanded(
                     child: _StatCard(
                       icon: Icons.warning,
-                      label: 'Expiring Soon',
+                      label: l10n?.expiringSoon ?? 'تنتهي قريباً',
                       value: expiring.length.toString(),
                       color: AppTheme.warning,
                     ),
@@ -67,7 +67,7 @@ class SubscriptionsListScreen extends StatelessWidget {
                   Expanded(
                     child: _StatCard(
                       icon: Icons.history,
-                      label: 'Expired',
+                      label: l10n?.expired ?? 'منتهي',
                       value: expired.length.toString(),
                       color: AppTheme.textSecondary,
                     ),
@@ -201,21 +201,23 @@ class _SubscriptionCard extends StatelessWidget {
     String statusText;
     IconData statusIcon;
     
+    final l10n = AppLocalizations.of(context);
+    
     if (subscription.status == Subscription.statusCancelled) {
       statusColor = AppTheme.error;
-      statusText = 'Cancelled';
+      statusText = l10n?.cancelled ?? 'ملغي';
       statusIcon = Icons.cancel;
     } else if (subscription.isExpired) {
       statusColor = AppTheme.textSecondary;
-      statusText = 'Expired';
+      statusText = l10n?.expired ?? 'منتهي';
       statusIcon = Icons.history;
     } else if (subscription.isExpiringSoon) {
       statusColor = AppTheme.warning;
-      statusText = '${subscription.daysRemaining} days left';
+      statusText = l10n?.daysLeft(subscription.daysRemaining) ?? '${subscription.daysRemaining} أيام';
       statusIcon = Icons.warning;
     } else {
       statusColor = AppTheme.success;
-      statusText = 'Active';
+      statusText = l10n?.active ?? 'نشط';
       statusIcon = Icons.check_circle;
     }
 
@@ -257,14 +259,14 @@ class _SubscriptionCard extends StatelessWidget {
                     crossAxisAlignment: CrossAxisAlignment.start,
                     children: [
                       Text(
-                        player?.name ?? 'Unknown Player',
+                        player?.name ?? l10n?.unknownPlayer ?? 'لاعب غير معروف',
                         style: Theme.of(context).textTheme.titleMedium?.copyWith(
                           fontWeight: FontWeight.w600,
                         ),
                       ),
                       const SizedBox(height: 2),
                       Text(
-                        plan?.name ?? 'Unknown Plan',
+                        plan?.name ?? l10n?.unknownPlan ?? 'خطة غير معروفة',
                         style: Theme.of(context).textTheme.bodySmall?.copyWith(
                           color: AppTheme.primaryColor,
                         ),

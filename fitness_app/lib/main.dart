@@ -31,7 +31,7 @@ class FitnessApp extends StatelessWidget {
         ChangeNotifierProvider(create: (_) => SubscriptionsProvider()),
       ],
       child: MaterialApp(
-        title: 'مدرب مجدل',
+        title: 'CoachBase',
         debugShowCheckedModeBanner: false,
         theme: AppTheme.darkTheme,
         localizationsDelegates: const [
