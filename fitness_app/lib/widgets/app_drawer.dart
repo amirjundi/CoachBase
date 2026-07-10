@@ -9,7 +9,9 @@ import '../screens/lockers/lockers_list_screen.dart';
 import '../screens/settings/currencies_screen.dart';
 
 class AppDrawer extends StatelessWidget {
-  const AppDrawer({super.key});
+  final Function(int)? onNavigate;
+  
+  const AppDrawer({super.key, this.onNavigate});
 
   @override
   Widget build(BuildContext context) {
@@ -80,6 +82,7 @@ class AppDrawer extends StatelessWidget {
                   title: l10n?.dashboard ?? 'لوحة التحكم',
                   onTap: () {
                     Navigator.pop(context);
+                    if (onNavigate != null) onNavigate!(0);
                   },
                 ),
                 _DrawerItem(
@@ -87,6 +90,7 @@ class AppDrawer extends StatelessWidget {
                   title: l10n?.players ?? 'اللاعبين',
                   onTap: () {
                     Navigator.pop(context);
+                    if (onNavigate != null) onNavigate!(1);
                   },
                 ),
                 _DrawerItem(
@@ -94,6 +98,7 @@ class AppDrawer extends StatelessWidget {
                   title: l10n?.workoutPlans ?? 'خطة التمارين',
                   onTap: () {
                     Navigator.pop(context);
+                    if (onNavigate != null) onNavigate!(2);
                   },
                 ),
                 _DrawerItem(
@@ -101,6 +106,7 @@ class AppDrawer extends StatelessWidget {
                   title: l10n?.exercises ?? 'التمارين',
                   onTap: () {
                     Navigator.pop(context);
+                    if (onNavigate != null) onNavigate!(3);
                   },
                 ),
                 _DrawerItem(
@@ -108,6 +114,7 @@ class AppDrawer extends StatelessWidget {
                   title: l10n?.subscriptions ?? 'الاشتراكات',
                   onTap: () {
                     Navigator.pop(context);
+                    if (onNavigate != null) onNavigate!(4);
                   },
                 ),
                 _DrawerItem(
@@ -116,11 +123,7 @@ class AppDrawer extends StatelessWidget {
                   iconColor: AppTheme.accentColor,
                   onTap: () {
                     Navigator.pop(context);
-                    Navigator.of(context).push(
-                      MaterialPageRoute(
-                        builder: (_) => const LockersListScreen(),
-                      ),
-                    );
+                    if (onNavigate != null) onNavigate!(5);
                   },
                 ),
                 const Divider(),

@@ -74,7 +74,13 @@ class _HomeScreenState extends State<HomeScreen> {
   Widget build(BuildContext context) {
     return Scaffold(
       key: scaffoldKey,
-      drawer: const AppDrawer(),
+      drawer: AppDrawer(
+        onNavigate: (index) {
+          setState(() {
+            _currentIndex = index;
+          });
+        },
+      ),
       body: IndexedStack(
         index: _currentIndex,
         children: _screens,
