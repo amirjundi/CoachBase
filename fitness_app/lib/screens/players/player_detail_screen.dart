@@ -8,6 +8,8 @@ import '../../providers/auth_provider.dart';
 import '../../providers/players_provider.dart';
 import '../../providers/subscriptions_provider.dart';
 import '../../providers/workout_plans_provider.dart';
+import '../../providers/lockers_provider.dart';
+import '../../providers/currencies_provider.dart';
 import '../../utils/theme.dart';
 import '../../utils/date_helpers.dart';
 import '../subscriptions/subscription_form_screen.dart';
@@ -56,6 +58,10 @@ class _PlayerDetailScreenState extends State<PlayerDetailScreen> {
     }
 
     final l10n = AppLocalizations.of(context);
+    final activeSubscription = _subscriptions.where((s) => s.isActive).toList();
+    final hasActiveSub = activeSubscription.isNotEmpty;
+    final hasExpiredSub = _subscriptions.any((s) => s.isExpired && s.status != Subscription.statusCancelled);
+
     return Scaffold(
       appBar: AppBar(
         title: Text(l10n?.playerDetails ?? 'تفاصيل اللاعب'),
@@ -115,22 +121,29 @@ class _PlayerDetailScreenState extends State<PlayerDetailScreen> {
           ],
         ),
       ),
-      floatingActionButton: FloatingActionButton.extended(
-        onPressed: () async {
-          await Navigator.of(context).push(
-            MaterialPageRoute(
-              builder: (_) => SubscriptionFormScreen(playerId: widget.playerId),
+      floatingActionButton: hasActiveSub
+          ? null // Hide FAB when player has active subscription
+          : FloatingActionButton.extended(
+              onPressed: () async {
+                await Navigator.of(context).push(
+                  MaterialPageRoute(
+                    builder: (_) => SubscriptionFormScreen(playerId: widget.playerId),
+                  ),
+                );
+                _loadSubscriptions();
+              },
+              icon: Icon(hasExpiredSub ? Icons.refresh : Icons.add),
+              label: Text(hasExpiredSub
+                  ? (l10n?.renewSubscription ?? 'تجديد الاشتراك')
+                  : (l10n?.assignPlan ?? 'تعيين خطة')),
             ),
-          );
-          _loadSubscriptions();
-        },
-        icon: const Icon(Icons.add),
-        label: Text(l10n?.assignPlan ?? 'تعيين خطة'),
-      ),
     );
   }
 
   Widget _buildPlayerInfoCard(BuildContext context, Player player, AppLocalizations? l10n) {
+    final lockersProvider = Provider.of<LockersProvider>(context);
+    final locker = lockersProvider.getByPlayer(player.id!);
+
     return Card(
       child: Padding(
         padding: const EdgeInsets.all(20),
@@ -162,7 +175,7 @@ class _PlayerDetailScreenState extends State<PlayerDetailScreen> {
               textAlign: TextAlign.center,
             ),
             const SizedBox(height: 12),
-            // Weight and Height
+            // Weight, Height, and Locker
             Row(
               mainAxisAlignment: MainAxisAlignment.center,
               children: [
@@ -178,6 +191,14 @@ class _PlayerDetailScreenState extends State<PlayerDetailScreen> {
                     icon: Icons.height_outlined,
                     label: '${player.height} سم',
                   ),
+                if (locker != null) ...[
+                  const SizedBox(width: 8),
+                  _InfoChip(
+                    icon: Icons.lock,
+                    label: '${l10n?.lockerNumber ?? "خزانة"} ${locker.lockerNumber}',
+                    color: AppTheme.accentColor,
+                  ),
+                ],
               ],
             ),
             const SizedBox(height: 12),
@@ -224,6 +245,7 @@ class _PlayerDetailScreenState extends State<PlayerDetailScreen> {
 
   Widget _buildActiveSubscriptionSection(BuildContext context, Player player, AppLocalizations? l10n) {
     final activeSubscription = _subscriptions.where((s) => s.isActive).toList();
+    final currenciesProvider = Provider.of<CurrenciesProvider>(context);
 
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
@@ -262,13 +284,14 @@ class _PlayerDetailScreenState extends State<PlayerDetailScreen> {
             ),
           )
         else
-          _buildSubscriptionCard(context, activeSubscription.first, player, l10n, isActive: true),
+          _buildSubscriptionCard(context, activeSubscription.first, player, l10n, currenciesProvider, isActive: true),
       ],
     );
   }
 
   Widget _buildSubscriptionHistory(BuildContext context, Player player, AppLocalizations? l10n) {
     final pastSubscriptions = _subscriptions.where((s) => !s.isActive).toList();
+    final currenciesProvider = Provider.of<CurrenciesProvider>(context);
 
     if (pastSubscriptions.isEmpty) {
       return const SizedBox.shrink();
@@ -284,16 +307,17 @@ class _PlayerDetailScreenState extends State<PlayerDetailScreen> {
         const SizedBox(height: 12),
         ...pastSubscriptions.map((sub) => Padding(
           padding: const EdgeInsets.only(bottom: 12),
-          child: _buildSubscriptionCard(context, sub, player, l10n),
+          child: _buildSubscriptionCard(context, sub, player, l10n, currenciesProvider),
         )),
         const SizedBox(height: 60), // Space for FAB
       ],
     );
   }
 
-  Widget _buildSubscriptionCard(BuildContext context, Subscription subscription, Player player, AppLocalizations? l10n, {bool isActive = false}) {
+  Widget _buildSubscriptionCard(BuildContext context, Subscription subscription, Player player, AppLocalizations? l10n, CurrenciesProvider currenciesProvider, {bool isActive = false}) {
     final plansProvider = Provider.of<WorkoutPlansProvider>(context);
     final plan = plansProvider.getById(subscription.planId);
+    final currency = currenciesProvider.getById(subscription.currencyId);
 
     Color statusColor;
     String statusText;
@@ -371,31 +395,36 @@ class _PlayerDetailScreenState extends State<PlayerDetailScreen> {
                   const Icon(Icons.payments_outlined, size: 16, color: AppTheme.textSecondary),
                   const SizedBox(width: 8),
                   Text(
-                    '\$${subscription.amountPaid!.toStringAsFixed(2)}',
+                    currency != null
+                        ? currency.formatAmount(subscription.amountPaid!)
+                        : '\$${subscription.amountPaid!.toStringAsFixed(2)}',
                     style: Theme.of(context).textTheme.bodySmall,
                   ),
                 ],
               ),
             ],
-            // View Plan Button
+            // View Plan & Export Buttons
             if (plan != null && isActive) ...[
               const SizedBox(height: 12),
-              SizedBox(
-                width: double.infinity,
-                child: OutlinedButton.icon(
-                  onPressed: () {
-                    Navigator.of(context).push(
-                      MaterialPageRoute(
-                        builder: (_) => PlayerWorkoutPlanScreen(
-                          player: player,
-                          plan: plan,
-                        ),
-                      ),
-                    );
-                  },
-                  icon: const Icon(Icons.fitness_center),
-                  label: Text(l10n?.viewPlan ?? 'عرض الخطة'),
-                ),
+              Row(
+                children: [
+                  Expanded(
+                    child: OutlinedButton.icon(
+                      onPressed: () {
+                        Navigator.of(context).push(
+                          MaterialPageRoute(
+                            builder: (_) => PlayerWorkoutPlanScreen(
+                              player: player,
+                              plan: plan,
+                            ),
+                          ),
+                        );
+                      },
+                      icon: const Icon(Icons.fitness_center),
+                      label: Text(l10n?.viewPlan ?? 'عرض الخطة'),
+                    ),
+                  ),
+                ],
               ),
             ],
           ],
@@ -433,10 +462,12 @@ class _PlayerDetailScreenState extends State<PlayerDetailScreen> {
 class _InfoChip extends StatelessWidget {
   final IconData icon;
   final String label;
+  final Color? color;
 
   const _InfoChip({
     required this.icon,
     required this.label,
+    this.color,
   });
 
   @override
@@ -444,17 +475,19 @@ class _InfoChip extends StatelessWidget {
     return Container(
       padding: const EdgeInsets.symmetric(horizontal: 12, vertical: 6),
       decoration: BoxDecoration(
-        color: AppTheme.surfaceColor,
+        color: color?.withOpacity(0.1) ?? AppTheme.surfaceColor,
         borderRadius: BorderRadius.circular(20),
       ),
       child: Row(
         mainAxisSize: MainAxisSize.min,
         children: [
-          Icon(icon, size: 16, color: AppTheme.textSecondary),
+          Icon(icon, size: 16, color: color ?? AppTheme.textSecondary),
           const SizedBox(width: 6),
           Text(
             label,
-            style: Theme.of(context).textTheme.bodySmall,
+            style: Theme.of(context).textTheme.bodySmall?.copyWith(
+              color: color,
+            ),
           ),
         ],
       ),

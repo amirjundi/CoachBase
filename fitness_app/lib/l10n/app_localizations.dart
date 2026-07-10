@@ -1011,6 +1011,276 @@ abstract class AppLocalizations {
   /// In ar, this message translates to:
   /// **'لا توجد أيام مضافة بعد. اضغط \"إضافة يوم\" للبدء.'**
   String get noWorkoutDaysMessage;
+
+  /// No description provided for @lockers.
+  ///
+  /// In ar, this message translates to:
+  /// **'الخزائن'**
+  String get lockers;
+
+  /// No description provided for @lockerNumber.
+  ///
+  /// In ar, this message translates to:
+  /// **'خزانة'**
+  String get lockerNumber;
+
+  /// No description provided for @assignLocker.
+  ///
+  /// In ar, this message translates to:
+  /// **'تعيين خزانة'**
+  String get assignLocker;
+
+  /// No description provided for @unassignLocker.
+  ///
+  /// In ar, this message translates to:
+  /// **'إلغاء التعيين'**
+  String get unassignLocker;
+
+  /// No description provided for @availableLockers.
+  ///
+  /// In ar, this message translates to:
+  /// **'خزائن متاحة'**
+  String get availableLockers;
+
+  /// No description provided for @occupiedLockers.
+  ///
+  /// In ar, this message translates to:
+  /// **'خزائن مشغولة'**
+  String get occupiedLockers;
+
+  /// No description provided for @lockerAssigned.
+  ///
+  /// In ar, this message translates to:
+  /// **'تم تعيين الخزانة'**
+  String get lockerAssigned;
+
+  /// No description provided for @lockerUnassigned.
+  ///
+  /// In ar, this message translates to:
+  /// **'تم إلغاء تعيين الخزانة'**
+  String get lockerUnassigned;
+
+  /// No description provided for @selectPlayerForLocker.
+  ///
+  /// In ar, this message translates to:
+  /// **'اختر لاعباً للخزانة'**
+  String get selectPlayerForLocker;
+
+  /// No description provided for @noLockers.
+  ///
+  /// In ar, this message translates to:
+  /// **'لا توجد خزائن'**
+  String get noLockers;
+
+  /// No description provided for @occupied.
+  ///
+  /// In ar, this message translates to:
+  /// **'مشغول'**
+  String get occupied;
+
+  /// No description provided for @available.
+  ///
+  /// In ar, this message translates to:
+  /// **'متاح'**
+  String get available;
+
+  /// No description provided for @total.
+  ///
+  /// In ar, this message translates to:
+  /// **'المجموع'**
+  String get total;
+
+  /// No description provided for @alerts.
+  ///
+  /// In ar, this message translates to:
+  /// **'التنبيهات'**
+  String get alerts;
+
+  /// No description provided for @unpaidSubscriptions.
+  ///
+  /// In ar, this message translates to:
+  /// **'اشتراكات غير مدفوعة'**
+  String get unpaidSubscriptions;
+
+  /// No description provided for @unpaid.
+  ///
+  /// In ar, this message translates to:
+  /// **'غير مدفوع'**
+  String get unpaid;
+
+  /// No description provided for @needsRenewal.
+  ///
+  /// In ar, this message translates to:
+  /// **'يحتاج تجديد'**
+  String get needsRenewal;
+
+  /// No description provided for @renewSubscription.
+  ///
+  /// In ar, this message translates to:
+  /// **'تجديد الاشتراك'**
+  String get renewSubscription;
+
+  /// No description provided for @overdue.
+  ///
+  /// In ar, this message translates to:
+  /// **'متأخر'**
+  String get overdue;
+
+  /// No description provided for @daysUnit.
+  ///
+  /// In ar, this message translates to:
+  /// **'يوم'**
+  String get daysUnit;
+
+  /// No description provided for @expiredOn.
+  ///
+  /// In ar, this message translates to:
+  /// **'انتهى في'**
+  String get expiredOn;
+
+  /// No description provided for @noAlerts.
+  ///
+  /// In ar, this message translates to:
+  /// **'لا توجد تنبيهات'**
+  String get noAlerts;
+
+  /// No description provided for @currencies.
+  ///
+  /// In ar, this message translates to:
+  /// **'العملات'**
+  String get currencies;
+
+  /// No description provided for @addCurrency.
+  ///
+  /// In ar, this message translates to:
+  /// **'إضافة عملة'**
+  String get addCurrency;
+
+  /// No description provided for @editCurrency.
+  ///
+  /// In ar, this message translates to:
+  /// **'تعديل العملة'**
+  String get editCurrency;
+
+  /// No description provided for @deleteCurrency.
+  ///
+  /// In ar, this message translates to:
+  /// **'حذف العملة'**
+  String get deleteCurrency;
+
+  /// No description provided for @currencyName.
+  ///
+  /// In ar, this message translates to:
+  /// **'اسم العملة'**
+  String get currencyName;
+
+  /// No description provided for @currencyCode.
+  ///
+  /// In ar, this message translates to:
+  /// **'رمز العملة'**
+  String get currencyCode;
+
+  /// No description provided for @currencySymbol.
+  ///
+  /// In ar, this message translates to:
+  /// **'رمز العملة'**
+  String get currencySymbol;
+
+  /// No description provided for @defaultLabel.
+  ///
+  /// In ar, this message translates to:
+  /// **'افتراضي'**
+  String get defaultLabel;
+
+  /// No description provided for @setAsDefault.
+  ///
+  /// In ar, this message translates to:
+  /// **'تعيين كافتراضي'**
+  String get setAsDefault;
+
+  /// No description provided for @currencyInUse.
+  ///
+  /// In ar, this message translates to:
+  /// **'لا يمكن حذف عملة مستخدمة في اشتراكات'**
+  String get currencyInUse;
+
+  /// No description provided for @noCurrencies.
+  ///
+  /// In ar, this message translates to:
+  /// **'لا توجد عملات'**
+  String get noCurrencies;
+
+  /// No description provided for @selectCurrency.
+  ///
+  /// In ar, this message translates to:
+  /// **'اختر العملة'**
+  String get selectCurrency;
+
+  /// No description provided for @playerHasActiveSubscription.
+  ///
+  /// In ar, this message translates to:
+  /// **'هذا اللاعب لديه اشتراك نشط بالفعل'**
+  String get playerHasActiveSubscription;
+
+  /// No description provided for @cannotAddSubscription.
+  ///
+  /// In ar, this message translates to:
+  /// **'لا يمكن إضافة اشتراك جديد'**
+  String get cannotAddSubscription;
+
+  /// No description provided for @share.
+  ///
+  /// In ar, this message translates to:
+  /// **'مشاركة'**
+  String get share;
+
+  /// No description provided for @download.
+  ///
+  /// In ar, this message translates to:
+  /// **'تحميل'**
+  String get download;
+
+  /// No description provided for @printLabel.
+  ///
+  /// In ar, this message translates to:
+  /// **'طباعة'**
+  String get printLabel;
+
+  /// No description provided for @exportPlan.
+  ///
+  /// In ar, this message translates to:
+  /// **'تصدير الخطة'**
+  String get exportPlan;
+
+  /// No description provided for @fileSaved.
+  ///
+  /// In ar, this message translates to:
+  /// **'تم حفظ الملف في'**
+  String get fileSaved;
+
+  /// No description provided for @shareVia.
+  ///
+  /// In ar, this message translates to:
+  /// **'مشاركة عبر'**
+  String get shareVia;
+
+  /// No description provided for @pdfExportOptions.
+  ///
+  /// In ar, this message translates to:
+  /// **'خيارات التصدير'**
+  String get pdfExportOptions;
+
+  /// No description provided for @saveToDevice.
+  ///
+  /// In ar, this message translates to:
+  /// **'حفظ في الجهاز'**
+  String get saveToDevice;
+
+  /// No description provided for @systemPrintDialog.
+  ///
+  /// In ar, this message translates to:
+  /// **'نافذة الطباعة'**
+  String get systemPrintDialog;
 }
 
 class _AppLocalizationsDelegate

@@ -5,6 +5,8 @@ import 'package:fitness_app/l10n/app_localizations.dart';
 import '../providers/auth_provider.dart';
 import '../utils/theme.dart';
 import '../screens/kiosk/player_kiosk_screen.dart';
+import '../screens/lockers/lockers_list_screen.dart';
+import '../screens/settings/currencies_screen.dart';
 
 class AppDrawer extends StatelessWidget {
   const AppDrawer({super.key});
@@ -108,6 +110,19 @@ class AppDrawer extends StatelessWidget {
                     Navigator.pop(context);
                   },
                 ),
+                _DrawerItem(
+                  icon: Icons.lock_outlined,
+                  title: l10n?.lockers ?? 'الخزائن',
+                  iconColor: AppTheme.accentColor,
+                  onTap: () {
+                    Navigator.pop(context);
+                    Navigator.of(context).push(
+                      MaterialPageRoute(
+                        builder: (_) => const LockersListScreen(),
+                      ),
+                    );
+                  },
+                ),
                 const Divider(),
                 // Player Kiosk Mode
                 _DrawerItem(
@@ -125,19 +140,15 @@ class AppDrawer extends StatelessWidget {
                 ),
                 const Divider(),
                 _DrawerItem(
-                  icon: Icons.settings_outlined,
-                  title: l10n?.settings ?? 'الإعدادات',
+                  icon: Icons.currency_exchange,
+                  title: l10n?.currencies ?? 'العملات',
                   onTap: () {
                     Navigator.pop(context);
-                    // TODO: Navigate to settings
-                  },
-                ),
-                _DrawerItem(
-                  icon: Icons.help_outline,
-                  title: l10n?.helpSupport ?? 'المساعدة والدعم',
-                  onTap: () {
-                    Navigator.pop(context);
-                    // TODO: Navigate to help
+                    Navigator.of(context).push(
+                      MaterialPageRoute(
+                        builder: (_) => const CurrenciesScreen(),
+                      ),
+                    );
                   },
                 ),
               ],

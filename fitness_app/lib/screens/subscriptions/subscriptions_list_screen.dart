@@ -6,6 +6,7 @@ import '../../models/subscription.dart';
 import '../../providers/subscriptions_provider.dart';
 import '../../providers/players_provider.dart';
 import '../../providers/workout_plans_provider.dart';
+import '../../providers/currencies_provider.dart';
 import '../../utils/theme.dart';
 import '../../utils/date_helpers.dart';
 import '../../widgets/empty_state.dart';
@@ -78,7 +79,7 @@ class SubscriptionsListScreen extends StatelessWidget {
 
               // Active Subscriptions
               if (active.isNotEmpty) ...[
-                _buildSectionHeader(context, 'Active Subscriptions', active.length),
+                _buildSectionHeader(context, l10n?.activeSubscription ?? 'اشتراكات نشطة', active.length),
                 const SizedBox(height: 12),
                 ...active.map((sub) => _SubscriptionCard(subscription: sub)),
                 const SizedBox(height: 24),
@@ -86,7 +87,7 @@ class SubscriptionsListScreen extends StatelessWidget {
 
               // Expired/Cancelled
               if (expired.isNotEmpty) ...[
-                _buildSectionHeader(context, 'Past Subscriptions', expired.length),
+                _buildSectionHeader(context, 'اشتراكات سابقة', expired.length),
                 const SizedBox(height: 12),
                 ...expired.map((sub) => _SubscriptionCard(subscription: sub)),
               ],
@@ -193,9 +194,11 @@ class _SubscriptionCard extends StatelessWidget {
   Widget build(BuildContext context) {
     final playersProvider = Provider.of<PlayersProvider>(context);
     final plansProvider = Provider.of<WorkoutPlansProvider>(context);
+    final currenciesProvider = Provider.of<CurrenciesProvider>(context);
     
     final player = playersProvider.getById(subscription.playerId);
     final plan = plansProvider.getById(subscription.planId);
+    final currency = currenciesProvider.getById(subscription.currencyId);
 
     Color statusColor;
     String statusText;
@@ -325,7 +328,9 @@ class _SubscriptionCard extends StatelessWidget {
                       const Icon(Icons.payments, size: 16, color: AppTheme.textSecondary),
                       const SizedBox(width: 6),
                       Text(
-                        '\$${subscription.amountPaid!.toStringAsFixed(2)}',
+                        currency != null
+                            ? currency.formatAmount(subscription.amountPaid!)
+                            : '\$${subscription.amountPaid!.toStringAsFixed(2)}',
                         style: Theme.of(context).textTheme.bodySmall?.copyWith(
                           fontWeight: FontWeight.w600,
                         ),

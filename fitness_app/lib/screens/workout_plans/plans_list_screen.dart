@@ -187,7 +187,7 @@ class _PlanCard extends StatelessWidget {
                         borderRadius: BorderRadius.circular(4),
                       ),
                       child: const Text(
-                        'Inactive',
+                        'غير نشط',
                         style: TextStyle(
                           fontSize: 11,
                           color: AppTheme.textSecondary,

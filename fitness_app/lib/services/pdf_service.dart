@@ -1,7 +1,10 @@
+import 'dart:io';
 import 'dart:typed_data';
 import 'package:pdf/pdf.dart';
 import 'package:pdf/widgets.dart' as pw;
 import 'package:flutter/services.dart' show rootBundle;
+import 'package:path_provider/path_provider.dart';
+import 'package:share_plus/share_plus.dart';
 import 'package:fitness_app/utils/date_helpers.dart';
 
 import '../models/workout_plan.dart';
@@ -272,6 +275,29 @@ class PdfService {
   /// Convenience wrapper specifically for player workout exports
   Future<Uint8List> generatePlayerPlanPdf(Player player, WorkoutPlan plan, List<PlanDay> days) async {
     return generatePlanPdf(plan, days, player: player);
+  }
+
+  /// Save PDF to device storage and return the file path
+  Future<String> savePdfToDevice(Uint8List pdfBytes, String fileName) async {
+    final directory = await getApplicationDocumentsDirectory();
+    final filePath = '${directory.path}/$fileName';
+    final file = File(filePath);
+    await file.writeAsBytes(pdfBytes);
+    return filePath;
+  }
+
+  /// Share PDF via native share sheet (WhatsApp, email, AirDrop, etc.)
+  Future<void> sharePdf(Uint8List pdfBytes, String fileName) async {
+    // Save to temp directory for sharing
+    final directory = await getTemporaryDirectory();
+    final filePath = '${directory.path}/$fileName';
+    final file = File(filePath);
+    await file.writeAsBytes(pdfBytes);
+    
+    await Share.shareXFiles(
+      [XFile(filePath, mimeType: 'application/pdf')],
+      subject: fileName.replaceAll('.pdf', ''),
+    );
   }
 
   pw.Widget _buildTableCell(String text, {bool isHeader = false}) {

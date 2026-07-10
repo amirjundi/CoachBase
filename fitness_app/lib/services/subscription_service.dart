@@ -48,6 +48,11 @@ class SubscriptionService {
     return Subscription.fromMap(results.first);
   }
 
+  Future<bool> hasActiveSubscription(int playerId) async {
+    final active = await getActiveByPlayer(playerId);
+    return active != null;
+  }
+
   Future<Subscription?> getById(int id) async {
     final db = await _dbHelper.database;
     
@@ -66,6 +71,12 @@ class SubscriptionService {
 
   Future<Subscription> create(Subscription subscription) async {
     final db = await _dbHelper.database;
+    
+    // Enforce single active subscription per player
+    final hasActive = await hasActiveSubscription(subscription.playerId);
+    if (hasActive) {
+      throw Exception('هذا اللاعب لديه اشتراك نشط بالفعل');
+    }
     
     final id = await db.insert('subscriptions', subscription.toMap());
     return subscription.copyWith(id: id);
@@ -147,5 +158,47 @@ class SubscriptionService {
       where: 'status = ? AND end_date < ?',
       whereArgs: [Subscription.statusActive, now],
     );
+  }
+
+  /// Get subscriptions with no payment recorded (unpaid alerts)
+  Future<List<Subscription>> getUnpaid(int trainerId) async {
+    final db = await _dbHelper.database;
+    
+    final results = await db.rawQuery('''
+      SELECT s.* FROM subscriptions s
+      INNER JOIN players p ON s.player_id = p.id
+      WHERE p.trainer_id = ? 
+        AND s.status = ?
+        AND (s.amount_paid IS NULL OR s.amount_paid = 0)
+      ORDER BY s.created_at DESC
+    ''', [trainerId, Subscription.statusActive]);
+
+    return results.map((map) => Subscription.fromMap(map)).toList();
+  }
+
+  /// Get expired subscriptions that need renewal (no newer active sub for the player)
+  Future<List<Subscription>> getExpiredNeedingRenewal(int trainerId) async {
+    final db = await _dbHelper.database;
+    
+    final results = await db.rawQuery('''
+      SELECT s.* FROM subscriptions s
+      INNER JOIN players p ON s.player_id = p.id
+      WHERE p.trainer_id = ? 
+        AND s.status = ?
+        AND NOT EXISTS (
+          SELECT 1 FROM subscriptions s2 
+          WHERE s2.player_id = s.player_id 
+            AND s2.status = ?
+            AND s2.end_date >= ?
+        )
+      ORDER BY s.end_date DESC
+    ''', [
+      trainerId, 
+      Subscription.statusExpired,
+      Subscription.statusActive,
+      DateTime.now().toIso8601String(),
+    ]);
+
+    return results.map((map) => Subscription.fromMap(map)).toList();
   }
 }

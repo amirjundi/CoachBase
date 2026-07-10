@@ -7,6 +7,7 @@ class Subscription {
   final String status;
   final double? amountPaid;
   final String? paymentNotes;
+  final int? currencyId;
   final DateTime createdAt;
 
   static const String statusActive = 'active';
@@ -22,6 +23,7 @@ class Subscription {
     this.status = statusActive,
     this.amountPaid,
     this.paymentNotes,
+    this.currencyId,
     DateTime? createdAt,
   }) : createdAt = createdAt ?? DateTime.now();
 
@@ -58,6 +60,7 @@ class Subscription {
       'status': status,
       'amount_paid': amountPaid,
       'payment_notes': paymentNotes,
+      'currency_id': currencyId,
       'created_at': createdAt.toIso8601String(),
     };
   }
@@ -74,6 +77,7 @@ class Subscription {
           ? (map['amount_paid'] as num).toDouble() 
           : null,
       paymentNotes: map['payment_notes'] as String?,
+      currencyId: map['currency_id'] as int?,
       createdAt: DateTime.parse(map['created_at'] as String),
     );
   }
@@ -87,6 +91,7 @@ class Subscription {
     String? status,
     double? amountPaid,
     String? paymentNotes,
+    int? currencyId,
     DateTime? createdAt,
   }) {
     return Subscription(
@@ -98,6 +103,7 @@ class Subscription {
       status: status ?? this.status,
       amountPaid: amountPaid ?? this.amountPaid,
       paymentNotes: paymentNotes ?? this.paymentNotes,
+      currencyId: currencyId ?? this.currencyId,
       createdAt: createdAt ?? this.createdAt,
     );
   }

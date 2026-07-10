@@ -6,14 +6,18 @@ import 'providers/players_provider.dart';
 import 'providers/workout_plans_provider.dart';
 import 'providers/exercises_provider.dart';
 import 'providers/subscriptions_provider.dart';
+import 'providers/lockers_provider.dart';
+import 'providers/currencies_provider.dart';
 import 'screens/auth/splash_screen.dart';
 import 'utils/theme.dart';
 
 import 'package:flutter_localizations/flutter_localizations.dart';
 import 'package:fitness_app/l10n/app_localizations.dart';
+import 'services/notification_service.dart';
 
-void main() {
+void main() async {
   WidgetsFlutterBinding.ensureInitialized();
+  await NotificationService.instance.init();
   runApp(const FitnessApp());
 }
 
@@ -29,6 +33,8 @@ class FitnessApp extends StatelessWidget {
         ChangeNotifierProvider(create: (_) => WorkoutPlansProvider()),
         ChangeNotifierProvider(create: (_) => ExercisesProvider()),
         ChangeNotifierProvider(create: (_) => SubscriptionsProvider()),
+        ChangeNotifierProvider(create: (_) => LockersProvider()),
+        ChangeNotifierProvider(create: (_) => CurrenciesProvider()),
       ],
       child: MaterialApp(
         title: 'CoachBase',

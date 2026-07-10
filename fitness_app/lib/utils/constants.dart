@@ -11,12 +11,14 @@ class Constants {
     'خبير',
   ];
 
-  // Subscription Durations (in months)
+  // Subscription Durations (in days/months/custom)
   static const List<Map<String, dynamic>> subscriptionDurations = [
-    {'label': 'شهر واحد', 'months': 1},
-    {'label': '3 أشهر', 'months': 3},
-    {'label': '6 أشهر', 'months': 6},
-    {'label': 'سنة واحدة', 'months': 12},
+    {'label': 'أسبوع واحد', 'months': 0, 'days': 7},
+    {'label': 'شهر واحد', 'months': 1, 'days': 0},
+    {'label': '3 أشهر', 'months': 3, 'days': 0},
+    {'label': '6 أشهر', 'months': 6, 'days': 0},
+    {'label': 'سنة واحدة', 'months': 12, 'days': 0},
+    {'label': 'مخصص', 'months': -1, 'days': -1}, // Custom indicator
   ];
 
   // Days of the week (starting from Saturday)

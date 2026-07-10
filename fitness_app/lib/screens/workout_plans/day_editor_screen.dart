@@ -181,7 +181,7 @@ class _ExerciseCard extends StatelessWidget {
                     crossAxisAlignment: CrossAxisAlignment.start,
                     children: [
                       Text(
-                        exercise.exerciseName ?? 'Exercise',
+                        exercise.exerciseName ?? 'تمرين',
                         style: Theme.of(context).textTheme.titleMedium,
                       ),
                       if (exercise.notes != null && exercise.notes!.isNotEmpty)
@@ -381,7 +381,7 @@ class _AddExerciseSheetState extends State<_AddExerciseSheet> {
                 )
               else
                 Text(
-                  widget.exerciseToEdit?.exerciseName ?? 'Exercise',
+                  widget.exerciseToEdit?.exerciseName ?? 'تمرين',
                   style: Theme.of(context).textTheme.titleMedium,
                 ),
 
@@ -413,7 +413,7 @@ class _AddExerciseSheetState extends State<_AddExerciseSheet> {
                              decoration: const InputDecoration(
                                contentPadding: EdgeInsets.symmetric(horizontal: 8, vertical: 0),
                                isDense: true,
-                               suffixText: 'Reps',
+                               suffixText: 'تكرار',
                                border: OutlineInputBorder(),
                              ),
                              onChanged: (val) => _updateSetReps(index, val),

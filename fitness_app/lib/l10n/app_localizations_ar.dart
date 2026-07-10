@@ -487,4 +487,139 @@ class AppLocalizationsAr extends AppLocalizations {
   @override
   String get noWorkoutDaysMessage =>
       'لا توجد أيام مضافة بعد. اضغط \"إضافة يوم\" للبدء.';
+
+  @override
+  String get lockers => 'الخزائن';
+
+  @override
+  String get lockerNumber => 'خزانة';
+
+  @override
+  String get assignLocker => 'تعيين خزانة';
+
+  @override
+  String get unassignLocker => 'إلغاء التعيين';
+
+  @override
+  String get availableLockers => 'خزائن متاحة';
+
+  @override
+  String get occupiedLockers => 'خزائن مشغولة';
+
+  @override
+  String get lockerAssigned => 'تم تعيين الخزانة';
+
+  @override
+  String get lockerUnassigned => 'تم إلغاء تعيين الخزانة';
+
+  @override
+  String get selectPlayerForLocker => 'اختر لاعباً للخزانة';
+
+  @override
+  String get noLockers => 'لا توجد خزائن';
+
+  @override
+  String get occupied => 'مشغول';
+
+  @override
+  String get available => 'متاح';
+
+  @override
+  String get total => 'المجموع';
+
+  @override
+  String get alerts => 'التنبيهات';
+
+  @override
+  String get unpaidSubscriptions => 'اشتراكات غير مدفوعة';
+
+  @override
+  String get unpaid => 'غير مدفوع';
+
+  @override
+  String get needsRenewal => 'يحتاج تجديد';
+
+  @override
+  String get renewSubscription => 'تجديد الاشتراك';
+
+  @override
+  String get overdue => 'متأخر';
+
+  @override
+  String get daysUnit => 'يوم';
+
+  @override
+  String get expiredOn => 'انتهى في';
+
+  @override
+  String get noAlerts => 'لا توجد تنبيهات';
+
+  @override
+  String get currencies => 'العملات';
+
+  @override
+  String get addCurrency => 'إضافة عملة';
+
+  @override
+  String get editCurrency => 'تعديل العملة';
+
+  @override
+  String get deleteCurrency => 'حذف العملة';
+
+  @override
+  String get currencyName => 'اسم العملة';
+
+  @override
+  String get currencyCode => 'رمز العملة';
+
+  @override
+  String get currencySymbol => 'رمز العملة';
+
+  @override
+  String get defaultLabel => 'افتراضي';
+
+  @override
+  String get setAsDefault => 'تعيين كافتراضي';
+
+  @override
+  String get currencyInUse => 'لا يمكن حذف عملة مستخدمة في اشتراكات';
+
+  @override
+  String get noCurrencies => 'لا توجد عملات';
+
+  @override
+  String get selectCurrency => 'اختر العملة';
+
+  @override
+  String get playerHasActiveSubscription => 'هذا اللاعب لديه اشتراك نشط بالفعل';
+
+  @override
+  String get cannotAddSubscription => 'لا يمكن إضافة اشتراك جديد';
+
+  @override
+  String get share => 'مشاركة';
+
+  @override
+  String get download => 'تحميل';
+
+  @override
+  String get printLabel => 'طباعة';
+
+  @override
+  String get exportPlan => 'تصدير الخطة';
+
+  @override
+  String get fileSaved => 'تم حفظ الملف في';
+
+  @override
+  String get shareVia => 'مشاركة عبر';
+
+  @override
+  String get pdfExportOptions => 'خيارات التصدير';
+
+  @override
+  String get saveToDevice => 'حفظ في الجهاز';
+
+  @override
+  String get systemPrintDialog => 'نافذة الطباعة';
 }

@@ -1,21 +1,29 @@
 import 'package:flutter/foundation.dart';
 import '../models/subscription.dart';
 import '../services/subscription_service.dart';
+import '../services/notification_service.dart';
 
 class SubscriptionsProvider with ChangeNotifier {
   final SubscriptionService _subscriptionService = SubscriptionService();
   List<Subscription> _subscriptions = [];
   List<Subscription> _expiringSoon = [];
+  List<Subscription> _unpaidSubscriptions = [];
+  List<Subscription> _needsRenewal = [];
   bool _isLoading = false;
   String? _error;
 
   List<Subscription> get subscriptions => _subscriptions;
   List<Subscription> get expiringSoon => _expiringSoon;
+  List<Subscription> get unpaidSubscriptions => _unpaidSubscriptions;
+  List<Subscription> get needsRenewal => _needsRenewal;
   List<Subscription> get activeSubscriptions => 
       _subscriptions.where((s) => s.isActive).toList();
   bool get isLoading => _isLoading;
   String? get error => _error;
   int get activeCount => activeSubscriptions.length;
+  int get unpaidCount => _unpaidSubscriptions.length;
+  int get renewalCount => _needsRenewal.length;
+  int get alertCount => unpaidCount + renewalCount;
 
   Future<void> loadSubscriptions(int trainerId) async {
     _isLoading = true;
@@ -28,6 +36,8 @@ class SubscriptionsProvider with ChangeNotifier {
       
       _subscriptions = await _subscriptionService.getAllByTrainer(trainerId);
       _expiringSoon = await _subscriptionService.getExpiringSoon(trainerId);
+      _unpaidSubscriptions = await _subscriptionService.getUnpaid(trainerId);
+      _needsRenewal = await _subscriptionService.getExpiredNeedingRenewal(trainerId);
     } catch (e) {
       _error = e.toString();
     }
@@ -51,6 +61,14 @@ class SubscriptionsProvider with ChangeNotifier {
     } catch (e) {
       _error = e.toString();
       return null;
+    }
+  }
+
+  Future<bool> hasActiveSubscription(int playerId) async {
+    try {
+      return await _subscriptionService.hasActiveSubscription(playerId);
+    } catch (e) {
+      return false;
     }
   }
 
@@ -94,6 +112,7 @@ class SubscriptionsProvider with ChangeNotifier {
     
     try {
       await _subscriptionService.cancel(id);
+      await NotificationService.instance.cancelSubscriptionAlerts(id);
       final index = _subscriptions.indexWhere((s) => s.id == id);
       if (index != -1) {
         _subscriptions[index] = _subscriptions[index].copyWith(
@@ -114,6 +133,7 @@ class SubscriptionsProvider with ChangeNotifier {
     
     try {
       await _subscriptionService.delete(id);
+      await NotificationService.instance.cancelSubscriptionAlerts(id);
       _subscriptions.removeWhere((s) => s.id == id);
       notifyListeners();
       return true;

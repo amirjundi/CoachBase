@@ -25,6 +25,7 @@ class PlayerWorkoutPlanScreen extends StatefulWidget {
 
 class _PlayerWorkoutPlanScreenState extends State<PlayerWorkoutPlanScreen> {
   bool _isLoading = true;
+  bool _isExporting = false;
 
   @override
   void initState() {
@@ -38,24 +39,161 @@ class _PlayerWorkoutPlanScreenState extends State<PlayerWorkoutPlanScreen> {
     setState(() => _isLoading = false);
   }
 
-  Future<void> _exportPdf(WorkoutPlan plan) async {
+  String get _pdfFileName {
+    final sanitized = widget.player.name.replaceAll(RegExp(r'[^\w\s]'), '').trim();
+    return '${sanitized}_${widget.plan.name}.pdf';
+  }
+
+  Future<void> _showExportOptions(WorkoutPlan plan) async {
+    final l10n = AppLocalizations.of(context);
+    showModalBottomSheet(
+      context: context,
+      backgroundColor: AppTheme.surfaceColor,
+      shape: const RoundedRectangleBorder(
+        borderRadius: BorderRadius.vertical(top: Radius.circular(20)),
+      ),
+      builder: (context) => SafeArea(
+        child: Padding(
+          padding: const EdgeInsets.all(24),
+          child: Column(
+            mainAxisSize: MainAxisSize.min,
+            children: [
+              Container(
+                width: 40,
+                height: 4,
+                decoration: BoxDecoration(
+                  color: AppTheme.textSecondary.withOpacity(0.3),
+                  borderRadius: BorderRadius.circular(2),
+                ),
+              ),
+              const SizedBox(height: 24),
+              Text(
+                l10n?.pdfExportOptions ?? 'خيارات التصدير',
+                style: Theme.of(context).textTheme.titleLarge,
+              ),
+              const SizedBox(height: 24),
+              
+              // Share Option
+              _ExportOption(
+                icon: Icons.share,
+                title: l10n?.share ?? 'مشاركة',
+                subtitle: 'WhatsApp, Telegram, Email...',
+                color: AppTheme.primaryColor,
+                onTap: () {
+                  Navigator.pop(context);
+                  _sharePdf(plan);
+                },
+              ),
+              const SizedBox(height: 12),
+              
+              // Download Option
+              _ExportOption(
+                icon: Icons.download,
+                title: l10n?.download ?? 'تحميل',
+                subtitle: l10n?.saveToDevice ?? 'حفظ في الجهاز',
+                color: AppTheme.accentColor,
+                onTap: () {
+                  Navigator.pop(context);
+                  _downloadPdf(plan);
+                },
+              ),
+              const SizedBox(height: 12),
+              
+              // Print Option
+              _ExportOption(
+                icon: Icons.print,
+                title: l10n?.printLabel ?? 'طباعة',
+                subtitle: l10n?.systemPrintDialog ?? 'نافذة الطباعة',
+                color: AppTheme.textSecondary,
+                onTap: () {
+                  Navigator.pop(context);
+                  _printPdf(plan);
+                },
+              ),
+              const SizedBox(height: 16),
+            ],
+          ),
+        ),
+      ),
+    );
+  }
+
+  Future<void> _sharePdf(WorkoutPlan plan) async {
+    setState(() => _isExporting = true);
     final pdfService = PdfService();
     final l10n = AppLocalizations.of(context);
     try {
       final pdfData = await pdfService.generatePlayerPlanPdf(
-        widget.player, 
-        plan, 
-        plan.days
+        widget.player, plan, plan.days,
+      );
+      await pdfService.sharePdf(pdfData, _pdfFileName);
+    } catch (e) {
+      if (mounted) {
+        ScaffoldMessenger.of(context).showSnackBar(
+          SnackBar(
+            content: Text('${l10n?.error ?? "خطأ"}: $e'),
+            backgroundColor: AppTheme.error,
+          ),
+        );
+      }
+    }
+    if (mounted) setState(() => _isExporting = false);
+  }
+
+  Future<void> _downloadPdf(WorkoutPlan plan) async {
+    setState(() => _isExporting = true);
+    final pdfService = PdfService();
+    final l10n = AppLocalizations.of(context);
+    try {
+      final pdfData = await pdfService.generatePlayerPlanPdf(
+        widget.player, plan, plan.days,
+      );
+      final filePath = await pdfService.savePdfToDevice(pdfData, _pdfFileName);
+      if (mounted) {
+        ScaffoldMessenger.of(context).showSnackBar(
+          SnackBar(
+            content: Text('${l10n?.fileSaved ?? "تم حفظ الملف في"}: $filePath'),
+            backgroundColor: AppTheme.success,
+            duration: const Duration(seconds: 4),
+          ),
+        );
+      }
+    } catch (e) {
+      if (mounted) {
+        ScaffoldMessenger.of(context).showSnackBar(
+          SnackBar(
+            content: Text('${l10n?.error ?? "خطأ"}: $e'),
+            backgroundColor: AppTheme.error,
+          ),
+        );
+      }
+    }
+    if (mounted) setState(() => _isExporting = false);
+  }
+
+  Future<void> _printPdf(WorkoutPlan plan) async {
+    setState(() => _isExporting = true);
+    final pdfService = PdfService();
+    final l10n = AppLocalizations.of(context);
+    try {
+      final pdfData = await pdfService.generatePlayerPlanPdf(
+        widget.player, plan, plan.days,
       );
       await Printing.layoutPdf(
         onLayout: (format) async => pdfData,
-        name: '${widget.player.name}_${plan.name}.pdf',
+        name: _pdfFileName,
       );
     } catch (e) {
-      ScaffoldMessenger.of(context).showSnackBar(
-        SnackBar(content: Text('${l10n?.error ?? "Error"}: $e')),
-      );
+      if (mounted) {
+        ScaffoldMessenger.of(context).showSnackBar(
+          SnackBar(
+            content: Text('${l10n?.error ?? "خطأ"}: $e'),
+            backgroundColor: AppTheme.error,
+          ),
+        );
+      }
     }
+    if (mounted) setState(() => _isExporting = false);
   }
 
   @override
@@ -70,11 +208,21 @@ class _PlayerWorkoutPlanScreenState extends State<PlayerWorkoutPlanScreen> {
           appBar: AppBar(
             title: Text(l10n?.playerWorkoutPlan ?? 'خطة تمرين اللاعب'),
             actions: [
-              IconButton(
-                icon: const Icon(Icons.picture_as_pdf),
-                tooltip: l10n?.exportPdf ?? 'تصدير PDF',
-                onPressed: () => _exportPdf(plan),
-              ),
+              if (_isExporting)
+                const Padding(
+                  padding: EdgeInsets.all(12),
+                  child: SizedBox(
+                    width: 24,
+                    height: 24,
+                    child: CircularProgressIndicator(strokeWidth: 2),
+                  ),
+                )
+              else
+                IconButton(
+                  icon: const Icon(Icons.picture_as_pdf),
+                  tooltip: l10n?.exportPdf ?? 'تصدير PDF',
+                  onPressed: () => _showExportOptions(plan),
+                ),
             ],
           ),
           body: _isLoading
@@ -245,7 +393,7 @@ class _PlayerWorkoutPlanScreenState extends State<PlayerWorkoutPlanScreen> {
                                             crossAxisAlignment: CrossAxisAlignment.start,
                                             children: [
                                               Text(
-                                                ex.exerciseName ?? 'Exercise',
+                                                ex.exerciseName ?? 'تمرين',
                                                 style: const TextStyle(fontWeight: FontWeight.w600),
                                               ),
                                               if (ex.sets.isNotEmpty)
@@ -283,6 +431,75 @@ class _PlayerWorkoutPlanScreenState extends State<PlayerWorkoutPlanScreen> {
                 ),
         );
       },
+    );
+  }
+}
+
+class _ExportOption extends StatelessWidget {
+  final IconData icon;
+  final String title;
+  final String subtitle;
+  final Color color;
+  final VoidCallback onTap;
+
+  const _ExportOption({
+    required this.icon,
+    required this.title,
+    required this.subtitle,
+    required this.color,
+    required this.onTap,
+  });
+
+  @override
+  Widget build(BuildContext context) {
+    return Material(
+      color: color.withOpacity(0.1),
+      borderRadius: BorderRadius.circular(16),
+      child: InkWell(
+        onTap: onTap,
+        borderRadius: BorderRadius.circular(16),
+        child: Container(
+          padding: const EdgeInsets.all(16),
+          decoration: BoxDecoration(
+            borderRadius: BorderRadius.circular(16),
+            border: Border.all(color: color.withOpacity(0.2)),
+          ),
+          child: Row(
+            children: [
+              Container(
+                width: 48,
+                height: 48,
+                decoration: BoxDecoration(
+                  color: color.withOpacity(0.2),
+                  borderRadius: BorderRadius.circular(12),
+                ),
+                child: Icon(icon, color: color),
+              ),
+              const SizedBox(width: 16),
+              Expanded(
+                child: Column(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: [
+                    Text(
+                      title,
+                      style: Theme.of(context).textTheme.titleMedium?.copyWith(
+                        fontWeight: FontWeight.w600,
+                      ),
+                    ),
+                    Text(
+                      subtitle,
+                      style: Theme.of(context).textTheme.bodySmall?.copyWith(
+                        color: AppTheme.textSecondary,
+                      ),
+                    ),
+                  ],
+                ),
+              ),
+              Icon(Icons.arrow_forward_ios, color: AppTheme.textSecondary, size: 16),
+            ],
+          ),
+        ),
+      ),
     );
   }
 }
