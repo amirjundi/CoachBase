@@ -97,8 +97,8 @@ class _LockersListScreenState extends State<LockersListScreen> {
                   : GridView.builder(
                       padding: const EdgeInsets.only(left: 16, right: 16, top: 16, bottom: 80),
                       gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
-                        crossAxisCount: 5,
-                        childAspectRatio: 0.85,
+                        crossAxisCount: 3,
+                        childAspectRatio: 1.0,
                         crossAxisSpacing: 8,
                         mainAxisSpacing: 8,
                       ),
@@ -411,12 +411,12 @@ class _LockerTile extends StatelessWidget {
               ),
               if (player != null)
                 Padding(
-                  padding: const EdgeInsets.symmetric(horizontal: 4),
+                  padding: const EdgeInsets.symmetric(horizontal: 6),
                   child: Text(
                     player.name,
-                    style: const TextStyle(fontSize: 8, color: AppTheme.textSecondary),
+                    style: const TextStyle(fontSize: 11, color: AppTheme.textSecondary),
                     overflow: TextOverflow.ellipsis,
-                    maxLines: 1,
+                    maxLines: 2,
                     textAlign: TextAlign.center,
                   ),
                 ),

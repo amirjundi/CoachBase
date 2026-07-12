@@ -10,7 +10,7 @@ import '../../providers/currencies_provider.dart';
 import '../../utils/theme.dart';
 import '../../utils/date_helpers.dart';
 import '../../utils/constants.dart';
-import 'package:flutter_localizations/flutter_localizations.dart';
+
 import 'package:fitness_app/l10n/app_localizations.dart';
 import '../../services/notification_service.dart';
 
@@ -340,17 +340,7 @@ class _SubscriptionFormScreenState extends State<SubscriptionFormScreen> {
               items: plansProvider.plans.where((p) => p.isActive).map((plan) {
                 return DropdownMenuItem(
                   value: plan.id,
-                  child: Column(
-                    crossAxisAlignment: CrossAxisAlignment.start,
-                    mainAxisSize: MainAxisSize.min,
-                    children: [
-                      Text(plan.name),
-                      Text(
-                        plan.difficultyLevel,
-                        style: Theme.of(context).textTheme.bodySmall,
-                      ),
-                    ],
-                  ),
+                  child: Text('${plan.name} - ${plan.difficultyLevel}'),
                 );
               }).toList(),
               onChanged: (value) {
